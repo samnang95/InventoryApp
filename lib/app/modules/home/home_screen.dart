@@ -313,7 +313,7 @@ class HomeScreen extends GetView<HomeController> {
   Widget _buildActionTile(IconData icon, String title, VoidCallback onTap) {
     return ListTile(
       leading: Icon(icon, color: Colors.black54),
-      title: Text(title),
+      title: Text(title, style: TextStyle(fontSize: 15)),
       trailing: Icon(Icons.arrow_forward_ios, size: 16),
       onTap: onTap,
     );
