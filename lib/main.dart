@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
+// import 'package:get_storage/get_storage.dart';
+import 'package:inventoryapp/app/controllers/ratio_controller.dart';
+import 'package:inventoryapp/app/controllers/theme_controller.dart';
 import 'package:inventoryapp/app/routes/app_pages.dart';
 import 'package:inventoryapp/app/routes/app_routes.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
-// import 'package:dio/dio.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await GetStorage.init();
-  runApp(const InventoryApp());
+  Get.put(ThemeController(), permanent: true);
+  Get.put(RatioController());
+  runApp(InventoryApp());
 }
 
 class InventoryApp extends StatelessWidget {
