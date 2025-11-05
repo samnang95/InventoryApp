@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 // import 'package:get_storage/get_storage.dart';
 import 'package:inventoryapp/app/controllers/ratio_controller.dart';
@@ -18,11 +19,18 @@ class InventoryApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Inventory App',
-      initialRoute: AppRoutes.splash, // start from splash
-      getPages: AppPages.pages, // ✅ Use AppPages.pages
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      builder: (context, child) {
+        return GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Inventory App',
+          theme: Get.find<ThemeController>().theme,
+          initialRoute: AppRoutes.splash, // start from splash
+          getPages: AppPages.pages, // ✅ Use AppPages.pages
+        );
+      },
     );
   }
 }

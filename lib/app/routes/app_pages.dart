@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
-import 'package:inventoryapp/app/modules/home/home_screen.dart';
-import 'package:inventoryapp/app/modules/home/home_binding.dart';
+import 'package:inventoryapp/app/modules/navigationBotton/navigationBotton_binding.dart';
+import 'package:inventoryapp/app/modules/navigationBotton/navigationBotton_screen.dart';
 import 'package:inventoryapp/app/modules/splash/splash_binding.dart';
 import 'package:inventoryapp/app/modules/splash/splash_screen.dart';
 import 'package:inventoryapp/app/modules/login/login_binding.dart';
@@ -28,8 +28,8 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.home,
-      page: () => const HomeDashboard(),
-      binding: HomeBinding(),
+      page: () => const NavigationbottonScreen(),
+      binding: NavigationbottonBinding(),
     ),
   ];
 }
