@@ -25,7 +25,7 @@ class LoginController extends GetxController {
       Get.snackbar('Success', 'Login successful!');
 
       // Navigate to home page
-      Get.offAllNamed(AppRoutes.home);
+      Get.offAllNamed(AppRoutes.navigationbotton);
     } catch (e) {
       Get.snackbar('Error', 'Login failed: $e');
     } finally {

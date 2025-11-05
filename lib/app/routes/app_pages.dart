@@ -27,7 +27,7 @@ class AppPages {
       binding: RegisterBinding(),
     ),
     GetPage(
-      name: AppRoutes.home,
+      name: AppRoutes.navigationbotton,
       page: () => const NavigationbottonScreen(),
       binding: NavigationbottonBinding(),
     ),
