@@ -38,11 +38,6 @@ class LoginController extends GetxController {
     Get.toNamed(AppRoutes.register);
   }
 
-  // Route to home page
-  // void goToHome() {
-  //   Get.toNamed(AppRoutes.home);
-  // }
-
   // Load saved user data
   void loadSavedData() {
     final savedEmail = StorageService.getEmail();

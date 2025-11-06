@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-class NavigationbottonController {
+class NavigationbottonController extends GetxController {
   final selectedIndex = 0.obs;
   final username = 'User'.obs;
 

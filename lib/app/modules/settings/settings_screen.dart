@@ -55,27 +55,27 @@ class SettingsScreen extends GetView<SettingsController> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // TOP HEADER
-              Container(
-                // width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: Colors.grey.shade300),
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      "Settings",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // Container(
+              //   // width: double.infinity,
+              //   padding: const EdgeInsets.symmetric(vertical: 16),
+              //   decoration: BoxDecoration(
+              //     border: Border(
+              //       bottom: BorderSide(color: Colors.grey.shade300),
+              //     ),
+              //   ),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.center,
+              //     children: const [
+              //       Text(
+              //         "Settings",
+              //         style: TextStyle(
+              //           fontSize: 18,
+              //           fontWeight: FontWeight.bold,
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
 
               // TEAM HEADER CARD
               Container(

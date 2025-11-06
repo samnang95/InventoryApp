@@ -28,7 +28,13 @@ class NavigationbottonScreen extends GetView<NavigationbottonController> {
           return true;
         },
         child: Scaffold(
-          appBar: AppBar(title: const Text('InventoryApp'), centerTitle: true),
+          appBar: AppBar(
+            title: const Text('InventoryApp'),
+            centerTitle: true,
+            actions: [
+              IconButton(icon: Icon(Icons.brightness_6), onPressed: () {}),
+            ],
+          ),
           body: SafeArea(child: pages[controller.selectedIndex.value]),
           bottomNavigationBar: BottomNavigationBar(
             currentIndex: controller.selectedIndex.value,
@@ -47,7 +53,6 @@ class NavigationbottonScreen extends GetView<NavigationbottonController> {
                 icon: Icon(Icons.swap_horiz),
                 label: 'Transactions',
               ),
-
               BottomNavigationBarItem(
                 icon: Icon(Icons.settings_outlined),
                 label: 'Settings',

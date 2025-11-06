@@ -1,13 +1,14 @@
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
-import 'package:inventoryapp/app/modules/navigationBotton/navigationBotton_route.dart';
+import 'package:inventoryapp/app/modules/navigationBotton/navigationBotton_binding.dart';
+import 'package:inventoryapp/app/modules/navigationBotton/navigationBotton_screen.dart';
+import 'package:inventoryapp/app/routes/app_routes.dart';
 
 class NavigationbottonPage {
-  static final pages = [
+  static final routes = [
     GetPage(
-      name: NavigationbottonRoute.home,
-      page: () => const Scaffold(),
-      binding: null,
+      name: AppRoutes.navigationbotton,
+      page: () => NavigationbottonScreen(),
+      binding: NavigationbottonBinding(),
     ),
   ];
 }

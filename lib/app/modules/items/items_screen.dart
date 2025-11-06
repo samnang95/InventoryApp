@@ -12,12 +12,13 @@ class ItemsScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('Items', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
+              // const Text('Items', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
               const SizedBox(height: 12),
               _QuickAction(
                 icon: Icons.add_circle_outline,
                 title: 'Add Your First Items',
-                desc: 'Scan a barcode or enter details to start your inventory.',
+                desc:
+                    'Scan a barcode or enter details to start your inventory.',
                 onTap: () => _showSnack(context, 'Add Item tapped'),
               ),
               _QuickAction(
@@ -38,9 +39,9 @@ class ItemsScreen extends StatelessWidget {
   }
 
   void _showSnack(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
-    );
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 }
 
@@ -68,7 +69,11 @@ class _QuickAction extends StatelessWidget {
           color: Colors.grey.shade100,
           borderRadius: BorderRadius.circular(12),
           boxShadow: const [
-            BoxShadow(color: Colors.black12, blurRadius: 3, offset: Offset(0, 2)),
+            BoxShadow(
+              color: Colors.black12,
+              blurRadius: 3,
+              offset: Offset(0, 2),
+            ),
           ],
         ),
         child: Row(
@@ -80,9 +85,18 @@ class _QuickAction extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
                   const SizedBox(height: 6),
-                  Text(desc, style: const TextStyle(fontSize: 14, color: Colors.black54)),
+                  Text(
+                    desc,
+                    style: const TextStyle(fontSize: 14, color: Colors.black54),
+                  ),
                 ],
               ),
             ),
@@ -92,4 +106,3 @@ class _QuickAction extends StatelessWidget {
     );
   }
 }
-
