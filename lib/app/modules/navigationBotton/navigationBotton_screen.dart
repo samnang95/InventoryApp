@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventoryapp/app/controllers/theme_controller.dart';
 import 'package:inventoryapp/app/modules/home/home_screen.dart';
 import 'package:inventoryapp/app/modules/items/items_screen.dart';
 import 'package:inventoryapp/app/modules/navigationBotton/navigationBotton_controller.dart';
@@ -7,7 +8,8 @@ import 'package:inventoryapp/app/modules/settings/settings_screen.dart';
 import 'package:inventoryapp/app/modules/transactions/transactions_screen.dart';
 
 class NavigationbottonScreen extends GetView<NavigationbottonController> {
-  const NavigationbottonScreen({super.key});
+  NavigationbottonScreen({super.key});
+  final ThemeController themeController = Get.put(ThemeController());
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +34,19 @@ class NavigationbottonScreen extends GetView<NavigationbottonController> {
             title: const Text('InventoryApp'),
             centerTitle: true,
             actions: [
-              IconButton(icon: Icon(Icons.brightness_6), onPressed: () {}),
+              Obx(
+                () => IconButton(
+                  icon: Icon(
+                    Icons.brightness_6,
+                    color: themeController.isDarkMode.value
+                        ? Colors.yellow
+                        : Colors.blueGrey,
+                  ),
+                  onPressed: () {
+                    themeController.toggleTheme();
+                  },
+                ),
+              ),
             ],
           ),
           body: SafeArea(child: pages[controller.selectedIndex.value]),

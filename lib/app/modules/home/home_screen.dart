@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventoryapp/app/modules/home/home_controller.dart';
+import 'package:inventoryapp/app/routes/app_routes.dart';
 
 class HomeScreen extends GetView<HomeController> {
   const HomeScreen({super.key});
@@ -29,7 +30,9 @@ class HomeScreen extends GetView<HomeController> {
 
             // 4. Items Section
             _buildActionSection('Items', [
-              _buildActionTile(Icons.add_circle_outline, 'Add Item', () {}),
+              _buildActionTile(Icons.add_circle_outline, 'Add Item', () {
+                Get.toNamed(AppRoutes.additem);
+              }),
             ]),
 
             const SizedBox(height: 20),

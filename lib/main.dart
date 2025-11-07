@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:inventoryapp/app/controllers/ratio_controller.dart';
 import 'package:inventoryapp/app/controllers/theme_controller.dart';
 import 'package:inventoryapp/app/routes/app_pages.dart';
@@ -8,6 +9,7 @@ import 'package:inventoryapp/app/routes/app_routes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
   Get.put(ThemeController(), permanent: true);
   Get.put(RatioController());
   runApp(InventoryApp());

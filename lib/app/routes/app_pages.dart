@@ -1,3 +1,5 @@
+import 'package:inventoryapp/app/modules/addItems/addItem_page.dart';
+import 'package:inventoryapp/app/modules/home/home_page.dart';
 import 'package:inventoryapp/app/modules/login/login_page.dart';
 import 'package:inventoryapp/app/modules/navigationBotton/navigationBotton_page.dart';
 import 'package:inventoryapp/app/modules/register/register_page.dart';
@@ -12,6 +14,10 @@ class AppPages {
     // Auth
     ...LoginPage.routes,
     ...RegisterPage.routes,
+
+    //Home
+    ...HomePage.routes,
+    ...AdditemPage.routes,
 
     // Navigation Route
     ...NavigationbottonPage.routes,

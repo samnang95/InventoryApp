@@ -11,6 +11,17 @@ class AppRoutes {
 
   // Home
   static const home = '/home';
+  static const additem = '/additem';
+  static const stockIn = '/stockIn';
+  static const outStock = '/OutStock';
+  static const moveStock = '/moveStock';
+  static const adjust = '/adjust';
+  static const stockAlert = '/stockAlert';
+  static const inventoryCount = '/inventoryCount';
+  static const teamMember = '/teamMember';
+  static const quantity = '/quantity';
+  static const baCode = '/baCode';
+  static const sales = '/sales';
 
   // Items
   static const items = '/items';
@@ -20,4 +31,9 @@ class AppRoutes {
 
   // Settings
   static const settings = '/settings';
+
+  // Profile
+  static const profile = '/profile';
+  static const name = '/name';
+  static const signin = '/signin';
 }
