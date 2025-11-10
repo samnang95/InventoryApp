@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventoryapp/app/modules/profile/profile_screen.dart';
+import 'package:inventoryapp/app/modules/settings/widgets/profile.dart';
 import 'settings_controller.dart';
 
 class SettingsScreen extends GetView<SettingsController> {
@@ -30,15 +32,7 @@ class SettingsScreen extends GetView<SettingsController> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              title,
-              style: const TextStyle(fontSize: 15),
-              // TextStyle(
-              //   fontSize: 16,
-              //   fontWeight: FontWeight.bold,
-              //   color: Colors.grey[700],
-              // ),
-            ),
+            Text(title, style: const TextStyle(fontSize: 15)),
             const Icon(Icons.chevron_right),
           ],
         ),
@@ -54,63 +48,15 @@ class SettingsScreen extends GetView<SettingsController> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // TOP HEADER
-              // Container(
-              //   // width: double.infinity,
-              //   padding: const EdgeInsets.symmetric(vertical: 16),
-              //   decoration: BoxDecoration(
-              //     border: Border(
-              //       bottom: BorderSide(color: Colors.grey.shade300),
-              //     ),
-              //   ),
-              //   child: Row(
-              //     mainAxisAlignment: MainAxisAlignment.center,
-              //     children: const [
-              //       Text(
-              //         "Settings",
-              //         style: TextStyle(
-              //           fontSize: 18,
-              //           fontWeight: FontWeight.bold,
-              //         ),
-              //       ),
-              //     ],
-              //   ),
-              // ),
-
-              // TEAM HEADER CARD
-              Container(
-                padding: const EdgeInsets.all(20),
-                margin: const EdgeInsets.only(top: 12),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.inventory_2_outlined, size: 42),
-                    // Image.asset('assets/images/s6.jpg'),
-                    const SizedBox(width: 12),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          "ThangChii",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16,
-                          ),
-                        ),
-
-                        SizedBox(height: 5),
-
-                        Text(
-                          "0 items  _  1 location  _  1 member",
-                          style: TextStyle(fontSize: 13, color: Colors.black54),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+              // Profile
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfileScreen()),
+                  );
+                },
+                child: Profile(),
               ),
 
               const SizedBox(height: 10),

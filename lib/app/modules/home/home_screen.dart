@@ -21,6 +21,7 @@ class HomeScreen extends GetView<HomeController> {
 
             // 2. Summary Card
             _buildSummaryCard(),
+
             const SizedBox(height: 20),
 
             // 3. Search Bar
@@ -146,7 +147,7 @@ class HomeScreen extends GetView<HomeController> {
             // Adding a second span for demonstration, e.g., an account status
             TextSpan(text: ' '),
             TextSpan(
-              text: 'Nang',
+              text: 'ThangChii',
               style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
             ),
           ],

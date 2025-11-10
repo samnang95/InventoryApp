@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventoryapp/app/modules/home/widgets/add_item_bottomsheet.dart';
 import 'package:inventoryapp/app/modules/inventory/inventory_controller.dart';
 import 'package:inventoryapp/app/modules/inventory/widgets/item_card.dart';
 
@@ -13,6 +14,12 @@ class InventoryScreen extends GetView<InventoryController> {
         backgroundColor: Colors.blue.shade800,
         onPressed: () {
           // Navigate to Add Item Page
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
+            builder: (_) => const AddItemBottomsheet(),
+          );
         },
         child: const Icon(Icons.add, size: 32),
       ),
@@ -90,13 +97,11 @@ class InventoryScreen extends GetView<InventoryController> {
               // Items and View all
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
-                    "Items",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
+                children: [
+                  Text("Items", style: Theme.of(context).textTheme.titleLarge),
                   Text(
                     "View all",
+                    // style: Theme.of(context).textTheme.titleMedium,
                     style: TextStyle(fontSize: 16, color: Colors.grey),
                   ),
                 ],

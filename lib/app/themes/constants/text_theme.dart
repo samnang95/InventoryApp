@@ -20,7 +20,6 @@ class AppTextTheme {
       fontWeight: FontWeight.bold,
       color: AppColors.lightTextPrimary,
     ),
-
     headlineLarge: TextStyle(
       fontSize: AppFontSize.headlineLarge,
       fontWeight: FontWeight.w600,

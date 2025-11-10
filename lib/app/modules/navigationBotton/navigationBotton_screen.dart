@@ -31,7 +31,10 @@ class NavigationbottonScreen extends GetView<NavigationbottonController> {
         },
         child: Scaffold(
           appBar: AppBar(
-            title: const Text('InventoryApp'),
+            title: Text(
+              'InventoryApp',
+              style: Theme.of(context).textTheme.titleLarge,
+            ),
             centerTitle: true,
             actions: [
               Obx(
