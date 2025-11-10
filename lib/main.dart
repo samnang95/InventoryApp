@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:inventoryapp/app/controllers/ratio_controller.dart';
 import 'package:inventoryapp/app/controllers/theme_controller.dart';
+import 'package:inventoryapp/app/modules/inventory/inventory_controller.dart';
 import 'package:inventoryapp/app/routes/app_pages.dart';
 import 'package:inventoryapp/app/routes/app_routes.dart';
 
@@ -12,6 +13,7 @@ void main() async {
   await GetStorage.init();
   Get.put(ThemeController(), permanent: true);
   Get.put(RatioController());
+  Get.put(InventoryController());
   runApp(InventoryApp());
 }
 

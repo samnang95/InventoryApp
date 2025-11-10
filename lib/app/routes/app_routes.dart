@@ -23,8 +23,8 @@ class AppRoutes {
   static const baCode = '/baCode';
   static const sales = '/sales';
 
-  // Items
-  static const items = '/items';
+  // Inventory Screen
+  static const inventory = '/inventory';
 
   // Transactions
   static const transactions = '/transactions';

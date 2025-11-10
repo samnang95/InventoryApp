@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventoryapp/app/controllers/theme_controller.dart';
 import 'package:inventoryapp/app/modules/home/home_screen.dart';
-import 'package:inventoryapp/app/modules/items/items_screen.dart';
+import 'package:inventoryapp/app/modules/inventory/inventory_screen.dart';
 import 'package:inventoryapp/app/modules/navigationBotton/navigationBotton_controller.dart';
 import 'package:inventoryapp/app/modules/settings/settings_screen.dart';
 import 'package:inventoryapp/app/modules/transactions/transactions_screen.dart';
@@ -15,7 +15,7 @@ class NavigationbottonScreen extends GetView<NavigationbottonController> {
   Widget build(BuildContext context) {
     final pages = const [
       HomeScreen(),
-      ItemsScreen(),
+      InventoryScreen(),
       TransactionsScreen(),
       SettingsScreen(),
     ];
@@ -61,7 +61,7 @@ class NavigationbottonScreen extends GetView<NavigationbottonController> {
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.inventory_2_outlined),
-                label: 'Items',
+                label: 'Inventory',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.swap_horiz),
