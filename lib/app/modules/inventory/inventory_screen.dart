@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventoryapp/app/modules/home/widgets/add_item_bottomsheet.dart';
 import 'package:inventoryapp/app/modules/inventory/inventory_controller.dart';
-import 'package:inventoryapp/app/modules/inventory/widgets/item_card.dart';
+import 'package:inventoryapp/app/modules/inventory/widgets/ItemCard.dart';
 
 class InventoryScreen extends GetView<InventoryController> {
   const InventoryScreen({super.key});
@@ -11,7 +11,7 @@ class InventoryScreen extends GetView<InventoryController> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.blue.shade800,
+        // backgroundColor: Colors.blue.shade800,
         onPressed: () {
           // Navigate to Add Item Page
           showModalBottomSheet(
@@ -34,25 +34,46 @@ class InventoryScreen extends GetView<InventoryController> {
                 children: [
                   // Search Bar
                   Expanded(
-                    child: TextField(
-                      onChanged: (value) =>
-                          controller.searchQuery.value = value,
-                      decoration: InputDecoration(
-                        hintText: "Search for an item",
-                        prefixIcon: const Icon(
-                          Icons.search,
-                          color: Colors.grey,
-                        ),
-                        filled: true,
-                        fillColor: const Color(
-                          0xFFE9E8F8,
-                        ), // soft lavender background
-                        contentPadding: const EdgeInsets.symmetric(
-                          vertical: 14,
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(18),
-                          borderSide: BorderSide.none,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(
+                          context,
+                        ).colorScheme.surface.withOpacity(0.3), // background
+                        borderRadius: BorderRadius.circular(18),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(
+                              0.1,
+                            ), // shadow color
+                            blurRadius: 6, // how soft
+                            offset: const Offset(0, 3), // position
+                          ),
+                        ],
+                      ),
+                      child: TextField(
+                        onChanged: (value) =>
+                            controller.searchQuery.value = value,
+                        style: Theme.of(
+                          context,
+                        ).textTheme.titleMedium, // text style
+                        decoration: InputDecoration(
+                          hintText: "Search for an item",
+                          hintStyle: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(color: Theme.of(context).hintColor),
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: Theme.of(context).iconTheme.color,
+                            size: Theme.of(context).iconTheme.size,
+                          ),
+                          filled: true,
+                          fillColor: Colors.transparent, // handled by Container
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 14,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: BorderSide.none,
+                          ),
                         ),
                       ),
                     ),
@@ -70,9 +91,10 @@ class InventoryScreen extends GetView<InventoryController> {
                       height: 55,
                       width: 55,
                       decoration: BoxDecoration(
-                        color: const Color(
-                          0xFFE9E8F8,
-                        ), // same color as search field
+                        color: Theme.of(context).colorScheme.surface
+                            .withOpacity(
+                              0.3,
+                            ), // theme background color as search field
                         borderRadius: BorderRadius.circular(18),
                         boxShadow: [
                           BoxShadow(
@@ -84,8 +106,8 @@ class InventoryScreen extends GetView<InventoryController> {
                       ),
                       child: const Icon(
                         Icons.swap_vert, // up-down arrow icon
-                        size: 28,
-                        color: Colors.black87,
+                        // size: 28,
+                        // color: Colors.black87,
                       ),
                     ),
                   ),
@@ -102,7 +124,7 @@ class InventoryScreen extends GetView<InventoryController> {
                   Text(
                     "View all",
                     // style: Theme.of(context).textTheme.titleMedium,
-                    style: TextStyle(fontSize: 16, color: Colors.grey),
+                    style: Theme.of(context).textTheme.titleSmall,
                   ),
                 ],
               ),
@@ -121,7 +143,7 @@ class InventoryScreen extends GetView<InventoryController> {
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemCount: items.length,
-                          itemBuilder: (_, i) => ItemCard(
+                          itemBuilder: (_, i) => CardScreen(
                             image: items[i]["image"],
                             name: items[i]["name"],
                             category: items[i]["category"],
@@ -138,7 +160,7 @@ class InventoryScreen extends GetView<InventoryController> {
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemCount: items.length,
-                          itemBuilder: (_, i) => ItemCard(
+                          itemBuilder: (_, i) => CardScreen(
                             image: items[i]["image"],
                             name: items[i]["name"],
                             category: items[i]["category"],
@@ -149,89 +171,6 @@ class InventoryScreen extends GetView<InventoryController> {
                         ),
 
                         SizedBox(height: 16),
-
-                        // Second list (duplicate section)
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: items.length,
-                          itemBuilder: (_, i) => ItemCard(
-                            image: items[i]["image"],
-                            name: items[i]["name"],
-                            category: items[i]["category"],
-                            stock: items[i]["stock"],
-                            id: items[i]["id"],
-                            price: items[i]["price"],
-                          ),
-                        ),
-
-                        SizedBox(height: 16),
-
-                        // Second list (duplicate section)
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: items.length,
-                          itemBuilder: (_, i) => ItemCard(
-                            image: items[i]["image"],
-                            name: items[i]["name"],
-                            category: items[i]["category"],
-                            stock: items[i]["stock"],
-                            id: items[i]["id"],
-                            price: items[i]["price"],
-                          ),
-                        ),
-
-                        SizedBox(height: 16),
-
-                        // Second list (duplicate section)
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: items.length,
-                          itemBuilder: (_, i) => ItemCard(
-                            image: items[i]["image"],
-                            name: items[i]["name"],
-                            category: items[i]["category"],
-                            stock: items[i]["stock"],
-                            id: items[i]["id"],
-                            price: items[i]["price"],
-                          ),
-                        ),
-
-                        SizedBox(height: 16),
-
-                        // Second list (duplicate section)
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: items.length,
-                          itemBuilder: (_, i) => ItemCard(
-                            image: items[i]["image"],
-                            name: items[i]["name"],
-                            category: items[i]["category"],
-                            stock: items[i]["stock"],
-                            id: items[i]["id"],
-                            price: items[i]["price"],
-                          ),
-                        ),
-
-                        SizedBox(height: 16),
-
-                        // Second list (duplicate section)
-                        ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: items.length,
-                          itemBuilder: (_, i) => ItemCard(
-                            image: items[i]["image"],
-                            name: items[i]["name"],
-                            category: items[i]["category"],
-                            stock: items[i]["stock"],
-                            id: items[i]["id"],
-                            price: items[i]["price"],
-                          ),
-                        ),
                       ],
                     ),
                   );

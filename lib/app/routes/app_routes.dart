@@ -15,6 +15,9 @@ class AppRoutes {
   // Inventory Screen
   static const inventory = '/inventory';
 
+  // ProductDetail
+  static const productDetail = '/productDetail';
+
   // Transactions
   static const transactions = '/transactions';
 

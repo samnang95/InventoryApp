@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class ItemCard extends StatelessWidget {
+class CardScreen extends StatelessWidget {
   final String image;
   final String name;
   final String category;
@@ -8,7 +8,7 @@ class ItemCard extends StatelessWidget {
   final String id;
   final double price;
 
-  const ItemCard({
+  const CardScreen({
     super.key,
     required this.image,
     required this.name,
@@ -21,13 +21,13 @@ class ItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: Colors.white, // background of card
+      // color: Colors.white, // background of card
       borderRadius: BorderRadius.circular(20),
       child: InkWell(
         borderRadius: BorderRadius.circular(20),
         onTap: () {
           // TODO: Navigate to Item Detail or Edit Screen
-          print("Tapped $name");
+          print("Tapped $name haha");
         },
         child: Container(
           margin: const EdgeInsets.symmetric(vertical: 7),
@@ -69,34 +69,29 @@ class ItemCard extends StatelessWidget {
                       children: [
                         Text(
                           name,
-                          style: const TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: Theme.of(context).textTheme.titleLarge,
                         ),
 
                         const SizedBox(width: 6),
 
                         Text(
                           "($category)",
-                          style: TextStyle(
-                            fontSize: 13,
-                            color: Colors.grey.shade600,
-                          ),
+                          style: Theme.of(context).textTheme.titleMedium,
                         ),
                       ],
                     ),
+
                     const SizedBox(height: 4),
                     Text(
                       " $stock in Stock",
-                      style: const TextStyle(fontSize: 14),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
+
+                    const SizedBox(height: 4),
+
                     Text(
                       " id $id",
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.grey.shade600,
-                      ),
+                      style: Theme.of(context).textTheme.titleSmall,
                     ),
                   ],
                 ),
@@ -107,11 +102,9 @@ class ItemCard extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    "\$$price",
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    // "\$ $price",
+                    "\$ ${price.toStringAsFixed(2)}",
+                    style: Theme.of(context).textTheme.titleLarge,
                   ),
 
                   const SizedBox(width: 8),

@@ -54,33 +54,21 @@ class HomeScreen extends GetView<HomeController> {
 
             // 6.Low Stock Alerts Section
             _buildActionSection(context, 'StockAlerts', [
-              _buildActionTile(
-                Icons.add_circle_outline,
-                'View Shortages',
-                () {},
-              ),
+              _buildActionTile(Icons.view_agenda, 'View Shortages', () {}),
             ]),
 
             const SizedBox(height: 20),
 
             // 7. Inventory Count Section
             _buildActionSection(context, 'Inventory Count', [
-              _buildActionTile(
-                Icons.add_circle_outline,
-                'Start Inventory Count',
-                () {},
-              ),
+              _buildActionTile(Icons.inventory, 'Start Inventory Count', () {}),
             ]),
 
             const SizedBox(height: 20),
 
             // 8. Team Member Section
             _buildActionSection(context, 'Team Members', [
-              _buildActionTile(
-                Icons.add_circle_outline,
-                'Invite Members',
-                () {},
-              ),
+              _buildActionTile(Icons.people, 'Invite Members', () {}),
             ]),
 
             const SizedBox(height: 20),
@@ -88,7 +76,7 @@ class HomeScreen extends GetView<HomeController> {
             // 9. Past Quantity Section
             _buildActionSection(context, 'Past Quantity', [
               _buildActionTile(
-                Icons.add_circle_outline,
+                Icons.production_quantity_limits,
                 'View Stock by Date',
                 () {},
               ),
@@ -99,7 +87,7 @@ class HomeScreen extends GetView<HomeController> {
             // 10.BarCode Labels Section
             _buildActionSection(context, 'BarCode Labels', [
               _buildActionTile(
-                Icons.add_circle_outline,
+                Icons.barcode_reader,
                 'Print items label',
                 () {},
               ),
@@ -109,9 +97,13 @@ class HomeScreen extends GetView<HomeController> {
 
             // 11. Purchase & Sales Section
             _buildActionSection(context, 'Purchase & Sales', [
-              _buildActionTile(Icons.add_circle_outline, 'Purchese', () {}),
-              _buildActionTile(Icons.add_circle_outline, 'Sales', () {}),
-              _buildActionTile(Icons.add_circle_outline, 'Returns', () {}),
+              _buildActionTile(Icons.sell_outlined, 'Purchese', () {}),
+              _buildActionTile(Icons.sell, 'Sales', () {}),
+              _buildActionTile(
+                Icons.keyboard_return_outlined,
+                'Returns',
+                () {},
+              ),
             ]),
 
             // ... Other Sections would follow ...
@@ -122,7 +114,9 @@ class HomeScreen extends GetView<HomeController> {
               child: OutlinedButton.icon(
                 icon: Icon(Icons.add),
                 label: Text('More'),
-                onPressed: () {},
+                onPressed: () {
+                  print("click more button");
+                },
                 style: OutlinedButton.styleFrom(
                   padding: EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                 ),

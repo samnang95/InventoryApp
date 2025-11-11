@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class TransactionsScreen extends StatelessWidget {
   const TransactionsScreen({super.key});
 
-  Widget transactionCard({
+  Widget transactionCard(
+    BuildContext context, {
     required IconData icon,
     required String title,
     required String desc,
@@ -15,7 +16,7 @@ class TransactionsScreen extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
         padding: const EdgeInsets.all(22),
         decoration: BoxDecoration(
-          color: Colors.grey.shade100,
+          color: Theme.of(context).secondaryHeaderColor,
           borderRadius: BorderRadius.circular(14),
           boxShadow: [
             BoxShadow(
@@ -34,18 +35,11 @@ class TransactionsScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  Text(title, style: Theme.of(context).textTheme.titleLarge),
+
                   const SizedBox(height: 6),
-                  Text(
-                    desc,
-                    style: const TextStyle(fontSize: 14, color: Colors.black54),
-                  ),
+
+                  Text(desc, style: Theme.of(context).textTheme.titleSmall),
                 ],
               ),
             ),
@@ -62,55 +56,55 @@ class TransactionsScreen extends StatelessWidget {
         child: Column(
           children: [
             // Top AppBar Style
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-              decoration: BoxDecoration(
-                border: Border(bottom: BorderSide(color: Colors.grey.shade300)),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
-                  Text(
-                    "Transactions",
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  Row(
-                    children: [
-                      Icon(Icons.filter_alt_outlined),
-                      SizedBox(width: 16),
-                      Icon(Icons.swap_vert),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 10),
+            // Container(
+            //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
+            //   decoration: BoxDecoration(
+            //     border: Border(bottom: BorderSide(color: Colors.grey.shade300)),
+            //   ),
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //     children: const [
+            //       Text(
+            //         "Transactions",
+            //         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            //       ),
+            //       Row(
+            //         children: [
+            //           Icon(Icons.filter_alt_outlined),
+            //           SizedBox(width: 16),
+            //           Icon(Icons.swap_vert),
+            //         ],
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            const SizedBox(height: 30),
 
             transactionCard(
+              context,
               icon: Icons.south, // ↓ icon
               title: "Stock In",
               desc:
                   "Add items to inventory by choosing a location and quantity.",
               onTap: () => _showSnack(context, 'Stock In'),
             ),
-
             transactionCard(
+              context,
               icon: Icons.north, // ↑ icon
               title: "Stock Out",
               desc:
                   "Remove item from inventory by choosing a location and quantity.",
               onTap: () => _showSnack(context, 'Stock Out'),
             ),
-
             transactionCard(
+              context,
               icon: Icons.east, // →
               title: "Move Stock",
               desc: "Transactions item between location to stay organized.",
               onTap: () => _showSnack(context, 'Move Stock'),
             ),
-
             transactionCard(
+              context,
               icon: Icons.north_east, // ↗
               title: "Adjust Stock",
               desc: "Update item quantities to match actual stock.",
@@ -121,10 +115,9 @@ class TransactionsScreen extends StatelessWidget {
       ),
 
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.black,
         shape: const CircleBorder(),
         onPressed: () => _showSnack(context, 'New transaction'),
-        child: const Icon(Icons.add, size: 32, color: Colors.white),
+        child: const Icon(Icons.add, size: 32),
       ),
     );
   }
