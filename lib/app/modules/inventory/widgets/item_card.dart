@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
 class ItemCard extends StatelessWidget {
-  final String image, name, category, id;
+  final String image;
+  final String name;
+  final String category;
   final int stock;
+  final String id;
   final double price;
 
   const ItemCard({
@@ -17,54 +20,113 @@ class ItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 14),
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        boxShadow: [
-          BoxShadow(
-            blurRadius: 12,
-            offset: Offset(0, 4),
-            color: Colors.black12,
+    return Material(
+      color: Colors.white, // background of card
+      borderRadius: BorderRadius.circular(20),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(20),
+        onTap: () {
+          // TODO: Navigate to Item Detail or Edit Screen
+          print("Tapped $name");
+        },
+        child: Container(
+          margin: const EdgeInsets.symmetric(vertical: 7),
+          padding: const EdgeInsets.all(14),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 6,
+                offset: const Offset(0, 3),
+              ),
+            ],
           ),
-        ],
-      ),
-      child: Row(
-        children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: Image.asset(image, height: 70, width: 70, fit: BoxFit.cover),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
+          child: Row(
+            children: [
+              // Product Image
+              Container(
+                height: 64,
+                width: 64,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(14),
+                  image: DecorationImage(
+                    image: AssetImage(image),
+                    fit: BoxFit.cover,
+                  ),
+                  color: const Color(0xFFE9E8F8),
+                ),
+              ),
+
+              const SizedBox(width: 16),
+
+              // Item Info
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Row(
+                      children: [
+                        Text(
+                          name,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+
+                        const SizedBox(width: 6),
+
+                        Text(
+                          "($category)",
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.grey.shade600,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
                     Text(
-                      name,
+                      " $stock in Stock",
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                    Text(
+                      " id $id",
                       style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
+                        fontSize: 13,
+                        color: Colors.grey.shade600,
                       ),
                     ),
-                    const SizedBox(width: 4),
-                    Text("($category)", style: TextStyle(color: Colors.grey)),
                   ],
                 ),
-                Text("$stock in Stock"),
-                Text("id $id", style: TextStyle(color: Colors.grey)),
-              ],
-            ),
+              ),
+
+              // Price + Menu
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    "\$$price",
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+
+                  const SizedBox(width: 8),
+
+                  GestureDetector(
+                    onTap: () {
+                      print("Menu tapped");
+                    },
+                    child: const Icon(Icons.more_vert, size: 22),
+                  ),
+                ],
+              ),
+            ],
           ),
-          Text(
-            "\$${price.toStringAsFixed(2)}",
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-        ],
+        ),
       ),
     );
   }

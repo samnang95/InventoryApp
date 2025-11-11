@@ -1,4 +1,3 @@
-import 'package:inventoryapp/app/modules/addItems/addItem_page.dart';
 import 'package:inventoryapp/app/modules/home/home_page.dart';
 import 'package:inventoryapp/app/modules/inventory/inventory_page.dart';
 import 'package:inventoryapp/app/modules/login/login_page.dart';
@@ -18,7 +17,6 @@ class AppPages {
 
     //Home
     ...HomePage.routes,
-    ...AdditemPage.routes,
 
     // Navigation Route
     ...NavigationbottonPage.routes,

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventoryapp/app/modules/home/home_controller.dart';
 import 'package:inventoryapp/app/modules/home/widgets/add_item_bottomsheet.dart';
-// import 'package:inventoryapp/app/routes/app_routes.dart';
 
 class HomeScreen extends GetView<HomeController> {
   const HomeScreen({super.key});
@@ -17,22 +16,21 @@ class HomeScreen extends GetView<HomeController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             // 1. ThangChii Header
-            _appBar(),
+            _appBar(context),
 
             // 2. Summary Card
-            _buildSummaryCard(),
+            _buildSummaryCard(context),
 
             const SizedBox(height: 20),
 
             // 3. Search Bar
-            _buildSearchBar(),
+            _buildSearchBar(context),
 
             const SizedBox(height: 20),
 
             // 4. Items Section
-            _buildActionSection('Items', [
+            _buildActionSection(context, 'Items', [
               _buildActionTile(Icons.add_circle_outline, 'Add Item', () {
-                // Get.toNamed(AppRoutes.additem);
                 showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
@@ -45,16 +43,17 @@ class HomeScreen extends GetView<HomeController> {
             const SizedBox(height: 20),
 
             // 5. Transactions Section
-            _buildActionSection('Transactions', [
+            _buildActionSection(context, 'Transactions', [
               _buildActionTile(Icons.arrow_downward, 'Stock In', () {}),
               _buildActionTile(Icons.arrow_upward, 'Stock Out', () {}),
               _buildActionTile(Icons.compare_arrows, 'Move Stock', () {}),
               _buildActionTile(Icons.history, 'Adjust Stock', () {}),
             ]),
+
             const SizedBox(height: 20),
 
             // 6.Low Stock Alerts Section
-            _buildActionSection('StockAlerts', [
+            _buildActionSection(context, 'StockAlerts', [
               _buildActionTile(
                 Icons.add_circle_outline,
                 'View Shortages',
@@ -62,8 +61,10 @@ class HomeScreen extends GetView<HomeController> {
               ),
             ]),
 
+            const SizedBox(height: 20),
+
             // 7. Inventory Count Section
-            _buildActionSection('Inventory Count', [
+            _buildActionSection(context, 'Inventory Count', [
               _buildActionTile(
                 Icons.add_circle_outline,
                 'Start Inventory Count',
@@ -71,8 +72,10 @@ class HomeScreen extends GetView<HomeController> {
               ),
             ]),
 
+            const SizedBox(height: 20),
+
             // 8. Team Member Section
-            _buildActionSection('Team Members', [
+            _buildActionSection(context, 'Team Members', [
               _buildActionTile(
                 Icons.add_circle_outline,
                 'Invite Members',
@@ -80,8 +83,10 @@ class HomeScreen extends GetView<HomeController> {
               ),
             ]),
 
+            const SizedBox(height: 20),
+
             // 9. Past Quantity Section
-            _buildActionSection('Past Quantity', [
+            _buildActionSection(context, 'Past Quantity', [
               _buildActionTile(
                 Icons.add_circle_outline,
                 'View Stock by Date',
@@ -89,8 +94,10 @@ class HomeScreen extends GetView<HomeController> {
               ),
             ]),
 
+            const SizedBox(height: 20),
+
             // 10.BarCode Labels Section
-            _buildActionSection('BarCode Labels', [
+            _buildActionSection(context, 'BarCode Labels', [
               _buildActionTile(
                 Icons.add_circle_outline,
                 'Print items label',
@@ -98,8 +105,10 @@ class HomeScreen extends GetView<HomeController> {
               ),
             ]),
 
+            const SizedBox(height: 20),
+
             // 11. Purchase & Sales Section
-            _buildActionSection('Purchase & Sales', [
+            _buildActionSection(context, 'Purchase & Sales', [
               _buildActionTile(Icons.add_circle_outline, 'Purchese', () {}),
               _buildActionTile(Icons.add_circle_outline, 'Sales', () {}),
               _buildActionTile(Icons.add_circle_outline, 'Returns', () {}),
@@ -125,7 +134,7 @@ class HomeScreen extends GetView<HomeController> {
     );
   }
 
-  Widget _appBar() {
+  Widget _appBar(context) {
     return ListTile(
       contentPadding: EdgeInsets.zero,
       leading: CircleAvatar(
@@ -138,18 +147,12 @@ class HomeScreen extends GetView<HomeController> {
       title: RichText(
         text: TextSpan(
           // Ensure you set a default style for the entire title
-          style: TextStyle(fontSize: 16, color: Colors.black),
+          style: Theme.of(context).textTheme.headlineSmall,
           children: <TextSpan>[
-            TextSpan(
-              text: 'Hello',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
+            TextSpan(text: 'Hello,'),
             // Adding a second span for demonstration, e.g., an account status
-            TextSpan(text: ' '),
-            TextSpan(
-              text: 'ThangChii',
-              style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
-            ),
+            // TextSpan(text: ' '),
+            TextSpan(text: 'ThangChii'),
           ],
         ),
       ),
@@ -158,9 +161,10 @@ class HomeScreen extends GetView<HomeController> {
   }
 
   // Helper for the dark blue Summary Card
-  Widget _buildSummaryCard() {
+  Widget _buildSummaryCard(context) {
     return Card(
-      color: Colors.blue[900], // Dark blue background
+      // color: Colors.blue[900], // Dark blue background
+      color: Theme.of(context).secondaryHeaderColor,
       elevation: 5,
       child: Container(
         padding: const EdgeInsets.all(16.0),
@@ -170,17 +174,20 @@ class HomeScreen extends GetView<HomeController> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Today Oct 22', style: TextStyle(color: Colors.white70)),
-                Icon(Icons.more_horiz, color: Colors.white70),
+                Text(
+                  'Today Oct 22',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                Icon(Icons.more_horiz),
               ],
             ),
             const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                _buildSummaryItem('Total', '100'),
-                _buildSummaryItem('Stock In', '50'),
-                _buildSummaryItem('Stock Out', '50'),
+                _buildSummaryItem(context, 'Total', '100'),
+                _buildSummaryItem(context, 'Stock In', '50'),
+                _buildSummaryItem(context, 'Stock Out', '50'),
               ],
             ),
           ],
@@ -190,33 +197,28 @@ class HomeScreen extends GetView<HomeController> {
   }
 
   // Helper for the individual items in the Summary Card
-  Widget _buildSummaryItem(String label, String value) {
+  Widget _buildSummaryItem(BuildContext context, String label, String value) {
     return Column(
       children: [
-        Text(
-          value,
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Text(label, style: TextStyle(color: Colors.white70)),
+        Text(value, style: Theme.of(context).textTheme.displaySmall),
+        const SizedBox(height: 5),
+        Text(label, style: Theme.of(context).textTheme.titleMedium),
       ],
     );
   }
 
   // Helper for the Search Bar
-  Widget _buildSearchBar() {
+  Widget _buildSearchBar(context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 8.0),
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        // color: Colors.grey[200],
+        color: Theme.of(context).secondaryHeaderColor,
         borderRadius: BorderRadius.circular(8.0),
       ),
       child: Row(
         children: [
-          Icon(Icons.search, color: Colors.grey),
+          Icon(Icons.search),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -228,30 +230,25 @@ class HomeScreen extends GetView<HomeController> {
               ),
             ),
           ),
-          Icon(Icons.fullscreen, color: Colors.grey),
+          // Icon(Icons.fullscreen, color: Colors.grey),
         ],
       ),
     );
   }
 
   // Helper to create a section with a title and action list
-  Widget _buildActionSection(String title, List<Widget> tiles) {
+  Widget _buildActionSection(
+    BuildContext context,
+    String title,
+    List<Widget> tiles,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Colors.grey[700],
-          ),
-        ),
-        // Use Card or a Container with rounded corners for the background,
-        // similar to the image's grouping.
+        Text(title, style: Theme.of(context).textTheme.titleLarge),
         Card(
           elevation: 0,
-          margin: EdgeInsets.symmetric(vertical: 8.0),
+          margin: const EdgeInsets.symmetric(vertical: 8.0),
           child: Column(children: tiles),
         ),
       ],
@@ -262,9 +259,9 @@ class HomeScreen extends GetView<HomeController> {
   // Helper for individual ListTiles in the action sections
   Widget _buildActionTile(IconData icon, String title, VoidCallback onTap) {
     return ListTile(
-      leading: Icon(icon, color: Colors.black54),
-      title: Text(title, style: TextStyle(fontSize: 15)),
-      trailing: Icon(Icons.arrow_forward_ios, size: 16),
+      leading: Icon(icon),
+      title: Text(title, style: Theme.of(Get.context!).textTheme.titleMedium),
+      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
       onTap: onTap,
     );
   }

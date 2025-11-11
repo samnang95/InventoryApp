@@ -33,7 +33,7 @@ class NavigationbottonScreen extends GetView<NavigationbottonController> {
           appBar: AppBar(
             title: Text(
               'InventoryApp',
-              style: Theme.of(context).textTheme.titleLarge,
+              // style: Theme.of(context).textTheme.titleLarge,
             ),
             centerTitle: true,
             actions: [
