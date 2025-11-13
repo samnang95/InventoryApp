@@ -13,7 +13,7 @@ class LoginScreen extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
@@ -22,9 +22,9 @@ class LoginScreen extends GetView<LoginController> {
               const SizedBox(height: 60),
               _images(),
               const SizedBox(height: 20),
-              _title(),
+              _title(context),
               const SizedBox(height: 40),
-              _subtitle(),
+              _subtitle(context),
               const SizedBox(height: 20),
 
               // ✅ Form with validators
@@ -42,7 +42,7 @@ class LoginScreen extends GetView<LoginController> {
               const SizedBox(height: 30),
               _buttonLogin(),
               const SizedBox(height: 20),
-              _signup(),
+              _signup(context),
               const SizedBox(height: 20),
             ],
           ),
@@ -52,41 +52,52 @@ class LoginScreen extends GetView<LoginController> {
   }
 
   Widget _images() {
-    return Image.asset(
-      'assets/images/box1.jpg',
-      width: 200,
-      height: 200,
-      errorBuilder: (context, error, stackTrace) {
-        return Container(
+    return Center(
+      child: ClipOval(
+        child: Image.asset(
+          'assets/images/s2.jpg',
           width: 200,
           height: 200,
-          decoration: BoxDecoration(
-            color: Colors.grey[300],
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Icon(Icons.inventory_2, size: 100, color: Colors.grey[600]),
-        );
-      },
+          fit: BoxFit.cover, // cover the circle
+          errorBuilder: (context, error, stackTrace) {
+            return Container(
+              width: 200,
+              height: 200,
+              decoration: BoxDecoration(
+                color: Colors.grey[300],
+                shape: BoxShape.circle, // make fallback container circular
+              ),
+              child: Icon(
+                Icons.inventory_2,
+                size: 100,
+                color: Colors.grey[600],
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 
-  Widget _title() {
-    return const Text(
+  Widget _title(context) {
+    return Text(
       'InventoryApp',
-      style: TextStyle(
-        fontSize: 22,
+      style: Theme.of(context).textTheme.displaySmall?.copyWith(
         fontWeight: FontWeight.w600,
-        color: Color(0xFF00B4D8),
+        color: Theme.of(context).colorScheme.primary,
       ),
       textAlign: TextAlign.center,
     );
   }
 
-  Widget _subtitle() {
-    return const Text(
+  Widget _subtitle(context) {
+    return Text(
       'Please login to your account',
-      style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-      textAlign: TextAlign.center,
+      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+        fontWeight: FontWeight.w600,
+        color: Theme.of(context).colorScheme.secondary,
+      ),
+      // textAlign: TextAlign.center,
     );
   }
 
@@ -180,7 +191,7 @@ class LoginScreen extends GetView<LoginController> {
     );
   }
 
-  Widget _signup() {
+  Widget _signup(context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -189,9 +200,9 @@ class LoginScreen extends GetView<LoginController> {
           onTap: () => Get.toNamed(AppRoutes.register),
           child: Text(
             'Sign Up',
-            style: TextStyle(
-              color: Colors.indigo.shade900,
-              fontWeight: FontWeight.bold,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).colorScheme.secondary,
             ),
           ),
         ),

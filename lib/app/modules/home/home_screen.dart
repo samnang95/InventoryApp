@@ -30,7 +30,7 @@ class HomeScreen extends GetView<HomeController> {
 
             // 4. Items Section
             _buildActionSection(context, 'Items', [
-              _buildActionTile(Icons.add_circle_outline, 'Add Item', () {
+              _buildActionTile(context, Icons.add_circle_outline, 'Add Item', () {
                 showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
@@ -44,31 +44,31 @@ class HomeScreen extends GetView<HomeController> {
 
             // 5. Transactions Section
             _buildActionSection(context, 'Transactions', [
-              _buildActionTile(Icons.arrow_downward, 'Stock In', () {}),
-              _buildActionTile(Icons.arrow_upward, 'Stock Out', () {}),
-              _buildActionTile(Icons.compare_arrows, 'Move Stock', () {}),
-              _buildActionTile(Icons.history, 'Adjust Stock', () {}),
+              _buildActionTile(context, Icons.arrow_downward, 'Stock In', () {}),
+              _buildActionTile(context, Icons.arrow_upward, 'Stock Out', () {}),
+              _buildActionTile(context, Icons.compare_arrows, 'Move Stock', () {}),
+              _buildActionTile(context, Icons.history, 'Adjust Stock', () {}),
             ]),
 
             const SizedBox(height: 20),
 
             // 6.Low Stock Alerts Section
             _buildActionSection(context, 'StockAlerts', [
-              _buildActionTile(Icons.view_agenda, 'View Shortages', () {}),
+              _buildActionTile(context, Icons.view_agenda, 'View Shortages', () {}),
             ]),
 
             const SizedBox(height: 20),
 
             // 7. Inventory Count Section
             _buildActionSection(context, 'Inventory Count', [
-              _buildActionTile(Icons.inventory, 'Start Inventory Count', () {}),
+              _buildActionTile(context, Icons.inventory, 'Start Inventory Count', () {}),
             ]),
 
             const SizedBox(height: 20),
 
             // 8. Team Member Section
             _buildActionSection(context, 'Team Members', [
-              _buildActionTile(Icons.people, 'Invite Members', () {}),
+              _buildActionTile(context, Icons.people, 'Invite Members', () {}),
             ]),
 
             const SizedBox(height: 20),
@@ -76,6 +76,7 @@ class HomeScreen extends GetView<HomeController> {
             // 9. Past Quantity Section
             _buildActionSection(context, 'Past Quantity', [
               _buildActionTile(
+                context,
                 Icons.production_quantity_limits,
                 'View Stock by Date',
                 () {},
@@ -87,7 +88,8 @@ class HomeScreen extends GetView<HomeController> {
             // 10.BarCode Labels Section
             _buildActionSection(context, 'BarCode Labels', [
               _buildActionTile(
-                Icons.barcode_reader,
+                context,
+                Icons.qr_code_2,
                 'Print items label',
                 () {},
               ),
@@ -97,9 +99,10 @@ class HomeScreen extends GetView<HomeController> {
 
             // 11. Purchase & Sales Section
             _buildActionSection(context, 'Purchase & Sales', [
-              _buildActionTile(Icons.sell_outlined, 'Purchese', () {}),
-              _buildActionTile(Icons.sell, 'Sales', () {}),
+              _buildActionTile(context, Icons.sell_outlined, 'Purchese', () {}),
+              _buildActionTile(context, Icons.sell, 'Sales', () {}),
               _buildActionTile(
+                context,
                 Icons.keyboard_return_outlined,
                 'Returns',
                 () {},
@@ -239,7 +242,14 @@ class HomeScreen extends GetView<HomeController> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: Theme.of(context).textTheme.titleLarge),
+        Text(
+          title,
+          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.w600,
+            color: Theme.of(context).colorScheme.secondary,
+          ),
+        ),
+
         Card(
           elevation: 0,
           margin: const EdgeInsets.symmetric(vertical: 8.0),
@@ -251,10 +261,15 @@ class HomeScreen extends GetView<HomeController> {
   // Helper to create a section with a title and action list
 
   // Helper for individual ListTiles in the action sections
-  Widget _buildActionTile(IconData icon, String title, VoidCallback onTap) {
+  Widget _buildActionTile(
+    BuildContext context,
+    IconData icon,
+    String title,
+    VoidCallback onTap,
+  ) {
     return ListTile(
       leading: Icon(icon),
-      title: Text(title, style: Theme.of(Get.context!).textTheme.titleMedium),
+      title: Text(title, style: Theme.of(context).textTheme.titleMedium),
       trailing: const Icon(Icons.arrow_forward_ios, size: 16),
       onTap: onTap,
     );

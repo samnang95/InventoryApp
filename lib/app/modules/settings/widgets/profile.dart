@@ -9,7 +9,7 @@ class Profile extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       margin: const EdgeInsets.only(top: 12),
       decoration: BoxDecoration(
-        color: Colors.grey.shade100,
+        color: Theme.of(context).secondaryHeaderColor,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
@@ -21,17 +21,15 @@ class Profile extends StatelessWidget {
           const SizedBox(width: 12),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text(
-                "ThangChii",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-              ),
+            children: [
+              Text("ThangChii", style: Theme.of(context).textTheme.titleMedium),
 
               SizedBox(height: 5),
 
               Text(
                 "0 items  _  1 location  _  1 member",
-                style: TextStyle(fontSize: 13, color: Colors.black54),
+                // style: TextStyle(fontSize: 13, color: Colors.black54),
+                style: Theme.of(context).textTheme.titleMedium,
               ),
             ],
           ),

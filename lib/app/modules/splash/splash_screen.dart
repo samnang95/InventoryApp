@@ -8,31 +8,36 @@ class SplashScreen extends GetView<SplashController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      // backgroundColor: Colors.white,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
-              'assets/images/box1.jpg',
-              width: 200,
-              height: 200,
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  width: 200,
-                  height: 200,
-                  decoration: BoxDecoration(
-                    color: Colors.grey[300],
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Icon(
-                    Icons.inventory_2,
-                    size: 100,
-                    color: Colors.grey[600],
-                  ),
-                );
-              },
+            ClipOval(
+              child: Image.asset(
+                'assets/images/box1.jpg',
+                width: 200,
+                height: 200,
+                fit: BoxFit.cover, // important to fill the circle evenly
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    width: 200,
+                    height: 200,
+                    decoration: BoxDecoration(
+                      color: Colors.grey[300],
+                      shape: BoxShape
+                          .circle, // make sure placeholder is also circular
+                    ),
+                    child: Icon(
+                      Icons.inventory_2,
+                      size: 100,
+                      color: Colors.grey[600],
+                    ),
+                  );
+                },
+              ),
             ),
+
             const SizedBox(height: 10),
             const Text(
               'Welcome to Inventory App',

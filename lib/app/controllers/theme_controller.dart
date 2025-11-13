@@ -18,12 +18,24 @@ class ThemeController extends GetxController {
   }
 
   void loadTheme() async {
-    isDarkMode.value = await _service.getTheme();
+    final storedTheme = await _service.getTheme();
+    _applyTheme(storedTheme, persist: false);
   }
 
   void toggleTheme() {
-    isDarkMode.value = !isDarkMode.value;
-    _service.saveTheme(isDarkMode.value);
-    Get.changeTheme(isDarkMode.value ? darkTheme : lightTheme);
+    _applyTheme(!isDarkMode.value);
+  }
+
+  void setTheme(bool isDark) {
+    if (isDarkMode.value == isDark) return;
+    _applyTheme(isDark);
+  }
+
+  void _applyTheme(bool isDark, {bool persist = true}) {
+    isDarkMode.value = isDark;
+    if (persist) {
+      _service.saveTheme(isDark);
+    }
+    Get.changeTheme(isDark ? darkTheme : lightTheme);
   }
 }

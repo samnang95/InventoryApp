@@ -27,5 +27,4 @@ class AppRoutes {
   // Profile
   static const profile = '/profile';
   static const name = '/name';
-  static const signin = '/signin';
 }

@@ -1,9 +1,7 @@
 import 'package:get/get.dart';
 
 class ProfileController extends GetxController {
-  var username = 'Samnang'.obs;
-
-  void updateUsername(String newName) {
-    username.value = newName;
-  }
+  var name = "Pozz Nang".obs;
+  var signInMethod = "Google".obs;
+  var language = "English".obs;
 }

@@ -3,8 +3,8 @@ import 'package:inventoryapp/app/modules/inventory/inventory_page.dart';
 import 'package:inventoryapp/app/modules/login/login_page.dart';
 import 'package:inventoryapp/app/modules/navigationBotton/navigationBotton_page.dart';
 import 'package:inventoryapp/app/modules/productDetail/productDetail_page.dart';
-import 'package:inventoryapp/app/modules/profile/profile_page.dart';
 import 'package:inventoryapp/app/modules/register/register_page.dart';
+import 'package:inventoryapp/app/modules/settings/settings_page.dart';
 import 'package:inventoryapp/app/modules/splash/splash_page.dart';
 import 'package:inventoryapp/app/modules/transactions/transactions_page.dart';
 
@@ -21,14 +21,21 @@ class AppPages {
     ...HomePage.routes,
 
     // Profile
-    ...ProfilePage.routes,
+    // ...ProfilePage.routes,
 
     // productDetail
     ...ProductdetailPage.routes,
 
-    // Navigation Route
+    // Setting
+    ...SettingsPage.routes,
+
+    // NavigationButton
     ...NavigationbottonPage.routes,
+
+    // Inventory
     ...InventoryPage.routes,
+
+    // Transactions
     ...TransactionsPage.routes,
   ];
 }
