@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:inventoryapp/app/routes/app_routes.dart';
 
 class CardScreen extends StatelessWidget {
   final String image;
@@ -26,8 +28,17 @@ class CardScreen extends StatelessWidget {
       child: InkWell(
         borderRadius: BorderRadius.circular(20),
         onTap: () {
-          // TODO: Navigate to Item Detail or Edit Screen
-          print("Tapped $name haha");
+          Get.toNamed(
+            AppRoutes.productDetail,
+            arguments: {
+              'id': id,
+              'name': name,
+              'category': category,
+              'stock': stock,
+              'price': price,
+              'image': image,
+            },
+          );
         },
         child: Container(
           margin: const EdgeInsets.symmetric(vertical: 7),
@@ -109,9 +120,10 @@ class CardScreen extends StatelessWidget {
 
                   const SizedBox(width: 8),
 
+                  // option menu Delete/Edit icon
                   GestureDetector(
                     onTap: () {
-                      print("Menu tapped");
+                      _showOptionBottomSheet(context);
                     },
                     child: const Icon(Icons.more_vert, size: 22),
                   ),
@@ -121,6 +133,44 @@ class CardScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  void _showOptionBottomSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (ctx) {
+        return SafeArea(
+          child: Wrap(
+            children: [
+              ListTile(
+                leading: const Icon(Icons.edit),
+                title: const Text('Edit'),
+                onTap: () {
+                  Navigator.of(ctx).pop();
+                  // TODO: Navigate to edit screen
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.delete),
+                title: const Text('Delete'),
+                onTap: () {
+                  Navigator.of(ctx).pop();
+                  // TODO: Handle delete action
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.close),
+                title: const Text('Close'),
+                onTap: () => Navigator.of(ctx).pop(),
+              ),
+            ],
+          ),
+        );
+      },
     );
   }
 }

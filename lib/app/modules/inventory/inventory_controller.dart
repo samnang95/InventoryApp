@@ -1,8 +1,32 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class InventoryController extends GetxController {
+  // TextEditingController for search field
+  final searchController = TextEditingController();
+  
   // reactive search text
   var searchQuery = ''.obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    // Listen to text changes
+    searchController.addListener(() {
+      searchQuery.value = searchController.text;
+    });
+  }
+
+  @override
+  void onClose() {
+    searchController.dispose();
+    super.onClose();
+  }
+
+  void clearSearch() {
+    searchController.clear();
+    searchQuery.value = '';
+  }
 
   // non-reactive source list (can be obs too)
   List<Map<String, dynamic>> items = [

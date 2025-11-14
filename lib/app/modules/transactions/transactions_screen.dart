@@ -55,29 +55,6 @@ class TransactionsScreen extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            // Top AppBar Style
-            // Container(
-            //   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-            //   decoration: BoxDecoration(
-            //     border: Border(bottom: BorderSide(color: Colors.grey.shade300)),
-            //   ),
-            //   child: Row(
-            //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //     children: const [
-            //       Text(
-            //         "Transactions",
-            //         style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            //       ),
-            //       Row(
-            //         children: [
-            //           Icon(Icons.filter_alt_outlined),
-            //           SizedBox(width: 16),
-            //           Icon(Icons.swap_vert),
-            //         ],
-            //       ),
-            //     ],
-            //   ),
-            // ),
             const SizedBox(height: 30),
 
             transactionCard(

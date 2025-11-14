@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inventoryapp/app/modules/login/login_controller.dart';
+import 'package:inventoryapp/app/modules/auth/login/login_controller.dart';
 import 'package:inventoryapp/app/routes/app_routes.dart';
 
 class LoginScreen extends GetView<LoginController> {

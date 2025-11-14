@@ -11,7 +11,6 @@ class InventoryScreen extends GetView<InventoryController> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
-        // backgroundColor: Colors.blue.shade800,
         onPressed: () {
           // Navigate to Add Item Page
           showModalBottomSheet(
@@ -45,7 +44,7 @@ class InventoryScreen extends GetView<InventoryController> {
                             color: Colors.black.withOpacity(
                               0.1,
                             ), // shadow color
-                            blurRadius: 6, // how soft
+                            // blurRadius: 6, // how soft
                             offset: const Offset(0, 3), // position
                           ),
                         ],
@@ -98,7 +97,7 @@ class InventoryScreen extends GetView<InventoryController> {
                         borderRadius: BorderRadius.circular(18),
                         boxShadow: [
                           BoxShadow(
-                            blurRadius: 4,
+                            // blurRadius: 4,
                             offset: const Offset(0, 2),
                             color: Colors.black.withOpacity(0.10),
                           ),
@@ -123,7 +122,6 @@ class InventoryScreen extends GetView<InventoryController> {
                   Text("Items", style: Theme.of(context).textTheme.titleLarge),
                   Text(
                     "View all",
-                    // style: Theme.of(context).textTheme.titleMedium,
                     style: Theme.of(context).textTheme.titleSmall,
                   ),
                 ],

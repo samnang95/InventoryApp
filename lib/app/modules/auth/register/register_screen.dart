@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inventoryapp/app/modules/register/register_controller.dart';
+import 'package:inventoryapp/app/modules/auth/register/register_controller.dart';
 import 'package:inventoryapp/app/routes/app_routes.dart';
 
 class RegisterScreen extends GetView<RegisterController> {
