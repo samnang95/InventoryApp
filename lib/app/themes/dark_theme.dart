@@ -34,4 +34,34 @@ final ThemeData darkTheme = ThemeData(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     ),
   ),
+  dividerColor: Colors.grey.shade700,
+
+  // ================= Modern TextField Style =================
+  inputDecorationTheme: InputDecorationTheme(
+    filled: true,
+    fillColor: Colors.grey[850],
+    contentPadding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 16.0),
+    labelStyle: TextStyle(color: Colors.grey[400]),
+    border: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: Colors.grey.shade600),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: Colors.grey.shade600),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: AppColors.primary, width: 2),
+    ),
+    errorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: AppColors.error, width: 2),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(12),
+      borderSide: BorderSide(color: AppColors.error, width: 2),
+    ),
+    floatingLabelBehavior: FloatingLabelBehavior.auto,
+  ),
 );

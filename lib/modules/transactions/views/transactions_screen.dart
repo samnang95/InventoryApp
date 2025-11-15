@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 import 'package:inventoryapp/app/constants/app_color.dart';
 import 'package:inventoryapp/app/widgets/item_card_widget.dart';
 import 'package:inventoryapp/app/widgets/summary_card_widget.dart';
-import 'transactions_controller.dart';
+import 'package:inventoryapp/modules/transactions/widgets/add_stock_dialog.dart';
+import '../controllers/transactions_controller.dart';
 
 class TransactionsScreen extends StatelessWidget {
   TransactionsScreen({super.key});
@@ -38,7 +39,7 @@ class TransactionsScreen extends StatelessWidget {
                   icon: item["icon"],
                   title: item["title"],
                   subtitle: item["desc"],
-                  onTap: () => _showSnack(context, item["title"]),
+                  onTap: () => transactionsController.navigateTo(item["title"]),
                 );
               },
             );
@@ -46,17 +47,10 @@ class TransactionsScreen extends StatelessWidget {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        shape: const CircleBorder(),
         backgroundColor: AppColors.primary,
-        onPressed: () => _showSnack(context, 'New transaction'),
+        onPressed: () => AddStockDialog.show(),
         child: const Icon(Icons.add, size: 32),
       ),
-    );
-  }
-
-  void _showSnack(BuildContext context, String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message)),
     );
   }
 }
