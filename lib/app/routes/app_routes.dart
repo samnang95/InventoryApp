@@ -20,6 +20,8 @@ class AppRoutes {
 
   // Transactions
   static const transactions = '/transactions';
+  static const stockIn = '/stockIn';
+  static const stockOut = '/stockOut';
 
   // Settings
   static const settings = '/settings';

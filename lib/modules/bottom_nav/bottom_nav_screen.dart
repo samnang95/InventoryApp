@@ -5,7 +5,7 @@ import 'package:inventoryapp/modules/bottom_nav/bottom_nav_controller.dart';
 import 'package:inventoryapp/modules/home/home_screen.dart';
 import 'package:inventoryapp/modules/inventory/inventory_screen.dart';
 import 'package:inventoryapp/modules/settings/settings_screen.dart';
-import 'package:inventoryapp/modules/transactions/transactions_screen.dart';
+import 'package:inventoryapp/modules/transactions/views/transactions_screen.dart';
 
 class BottomNavScreen extends GetView<BottomNavController> {
   BottomNavScreen({super.key});
