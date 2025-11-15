@@ -34,4 +34,6 @@ final ThemeData lightTheme = ThemeData(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
     ),
   ),
+  // Added divider color
+  dividerColor: Colors.grey.shade200,
 );
