@@ -1,222 +1,176 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inventoryapp/modules/productDetail/productDetail_controller.dart';
+import 'package:inventoryapp/app/constants/app_spacing.dart';
+import 'package:inventoryapp/app/widgets/item_card_widget.dart';
+import 'package:inventoryapp/modules/productDetail/widgets/product_chip_widget.dart';
+import 'package:inventoryapp/modules/productDetail/widgets/product_header_widget.dart';
+import 'package:inventoryapp/modules/productDetail/widgets/stock_update_dialog.dart';
+import 'package:inventoryapp/modules/productDetail/widgets/supplier_update_dialog.dart';
 
-class ProductDetailView extends StatelessWidget {
-  final controller = Get.put(ProductDetailController());
+class ProductDetailScreen extends StatelessWidget {
+  ProductDetailScreen({super.key});
 
-  ProductDetailView({super.key});
+  // ---------------------------------------------------------
+  // FIXED PRODUCT DATA (NO ARGUMENTS)
+  // ---------------------------------------------------------
+  final item = {
+    "id": 1,
+    "name": "Wireless Headphones",
+    "price": 59.99,
+    "image":
+    "https://images.unsplash.com/photo-1518443737228-7d3f339a7e31?w=600",
+    "category": "Electronics",
+    "brand": "Sony",
+    "sku": "WH-1000XM",
+    "stock": 42,
+    "supplier": "Sony Supplier Ltd",
+    "supplier_contact": "+855 98 888 777",
+    "description":
+    "Premium wireless headphones with noise cancellation, deep bass, and long-lasting battery performance.",
+  };
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      // backgroundColor: Colors.grey.shade200,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _header(context),
-              _imageSection(context),
-              _infoSection(context),
-              _descriptionSection(context),
-              const SizedBox(height: 20),
-            ],
-          ),
-        ),
+      backgroundColor: theme.scaffoldBackgroundColor,
+      body: Column(
+        children: [
+          _buildHeader(theme),
+          Expanded(child: _buildContent(theme, context)),
+        ],
       ),
     );
   }
 
-  // HEADER
-  Widget _header(context) {
-    return Row(
-      children: [
-        IconButton(
-          onPressed: () => Get.back(),
-          icon: Icon(
-            Icons.arrow_back,
-            size: 26,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-        ),
-        const SizedBox(width: 5),
-        Text(
-          "Product Detail",
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            fontWeight: FontWeight.w600,
-            color: Theme.of(context).colorScheme.primary,
-          ),
-        ),
-      ],
+  // ======================================================
+  // HEADER WITH GRADIENT + HERO
+  // ======================================================
+  Widget _buildHeader(ThemeData theme) {
+    final List<String> productImages = [
+      "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600",
+      "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=600",
+      "https://images.pexels.com/photos/335257/pexels-photo-335257.jpeg",
+      "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg",
+      "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600",
+      "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=600",
+      "https://images.pexels.com/photos/335257/pexels-photo-335257.jpeg",
+      "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg"
+    ];
+
+    return ProductHeaderWidget(
+      productId: 1,
+      images: productImages,
     );
+
   }
 
-  Widget _imageSection(BuildContext context) {
-    return Obx(() {
-      if (controller.image.value.isEmpty) {
-        return const SizedBox.shrink();
-      }
-      return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-        padding: const EdgeInsets.all(15),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(18),
-          color: Colors.white,
-        ),
+  Widget _buildContent(ThemeData theme, BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(AppSpacing.paddingSM),
+      decoration: BoxDecoration(
+        color: theme.cardColor,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      child: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              padding: const EdgeInsets.all(15),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(18),
-                color: Colors.grey.shade100,
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Image.asset(
-                  controller.image.value,
-                  height: 200,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      height: 200,
-                      color: Colors.grey.shade300,
-                      child: const Icon(Icons.image_not_supported, size: 50),
-                    );
-                  },
-                ),
-              ),
-            ),
-            if (controller.images.length > 1) ...[
-              const SizedBox(height: 10),
-              _indicator(context),
-            ],
-          ],
-        ),
-      );
-    });
-  }
-
-  Widget _indicator(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(
-        controller.images.length,
-        (index) => Obx(() {
-          bool active = controller.currentImage.value == index;
-          return Container(
-            margin: const EdgeInsets.symmetric(horizontal: 4),
-            width: 8,
-            height: 8,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: active
-                  ? Theme.of(context).colorScheme.primary
-                  : Colors.grey,
-            ),
-          );
-        }),
-      ),
-    );
-  }
-
-  Widget _infoSection(BuildContext context) {
-    return Obx(
-      () => Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          children: [
-            Expanded(
-              child: Row(
-                children: [
-                  Text(
-                    controller.name.value.isNotEmpty
-                        ? controller.name.value
-                        : "Product",
-                    style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  if (controller.category.value.isNotEmpty) ...[
-                    const SizedBox(width: 5),
-                    Text(
-                      "(${controller.category.value})",
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ],
-                ],
+            // Title + Price
+            Text(
+              item["name"].toString(),
+              style: theme.textTheme.titleLarge!.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
               ),
             ),
             Text(
-              "\$ ${controller.price.value.toStringAsFixed(2)}",
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                color: Theme.of(context).colorScheme.primary,
-                fontWeight: FontWeight.w600,
+              "\$${item["price"]}",
+              style: theme.textTheme.titleLarge!.copyWith(
+                fontWeight: FontWeight.bold,
+                color: theme.colorScheme.primary,
+                fontSize: 22,
               ),
             ),
+            SizedBox(height: AppSpacing.paddingL),
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: [
+                productChipWidget(theme, Icons.category, item["category"].toString()),
+                productChipWidget(theme, Icons.store, item["brand"].toString()),
+                productChipWidget(theme, Icons.qr_code, "SKU: ${item["sku"]}"),
+              ],
+            ),
+            SizedBox(height: AppSpacing.paddingL),
+            _buildStockCard(context),
+            SizedBox(height: AppSpacing.paddingXS),
+            _buildSupplierCard(),
+            SizedBox(height: AppSpacing.paddingL),
+            // Description
+            Text(
+              "Description",
+              style: theme.textTheme.titleMedium!.copyWith(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              item["description"].toString(),
+              style: theme.textTheme.bodyMedium!.copyWith(
+                height: 1.5,
+                color: theme.colorScheme.onSurface.withOpacity(.7),
+              ),
+            ),
+
+            const SizedBox(height: 40),
           ],
         ),
       ),
     );
   }
 
-  Widget _descriptionSection(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(16),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _ratingRow(),
-          const SizedBox(height: 20),
-          const Text(
-            "Description",
-            style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+  Widget _buildStockCard(BuildContext context) {
+    return ItemCardWidget(
+      icon: Icons.inventory_2_rounded,
+      title: "Stock Available",
+      subtitle: "${item["stock"]} items",
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (_) => StockUpdateDialog(
+            item: item,
+            onUpdate: (type, qty, date) {
+
+            },
           ),
-          const SizedBox(height: 10),
-          Text(
-            "Lorem ipsum dolor sit amet consectetur. Adipiscing cursus "
-            "ultrices venenatis velit eu aliquet convallis.",
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-          const SizedBox(height: 20),
-          _bottomButtons(),
-        ],
-      ),
+        );
+      },
+      showArrow: true,
+      trailing: null,
     );
   }
 
-  Widget _ratingRow() {
-    return Obx(
-      () => Row(
-        children: [
-          const Icon(Icons.inventory_2, size: 22),
-          const SizedBox(width: 4),
-          Text("${controller.stock.value} in Stock"),
-          if (controller.id.value.isNotEmpty) ...[
-            const SizedBox(width: 15),
-            Container(height: 20, width: 1.2, color: Colors.grey),
-            const SizedBox(width: 15),
-            Text("ID: ${controller.id.value}"),
-          ],
-        ],
-      ),
+  Widget _buildSupplierCard() {
+    return ItemCardWidget(
+      icon: Icons.business_center,
+      title: item["supplier"].toString(),
+      subtitle: item["supplier_contact"].toString(),
+      onTap: () {
+        showDialog(
+          context: Get.context!,
+          builder: (_) => SupplierDialogWidget(
+            onSubmit: (name, contact, address) {
+
+            },
+          ),
+        );
+      },
+      showArrow: true,
+      trailing: null,
     );
   }
 
-  Widget _bottomButtons() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: const [
-        Icon(Icons.chat_bubble_outline, size: 28),
-        SizedBox(width: 18),
-        Icon(Icons.favorite_border, size: 28),
-      ],
-    );
-  }
 }

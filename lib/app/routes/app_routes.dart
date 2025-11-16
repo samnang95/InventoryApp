@@ -12,8 +12,8 @@ class AppRoutes {
   // Home
   static const home = '/home';
 
-  // Inventory Screen
-  static const inventory = '/inventory';
+  // Product
+  static const product = '/product';
 
   // ProductDetail
   static const productDetail = '/productDetail';
@@ -29,4 +29,13 @@ class AppRoutes {
   // Profile
   static const profile = '/profile';
   static const name = '/name';
+
+  /// Dashboard
+  static const dashboard = '/dashboard';
+
+  /// Category
+  static const category = '/category';
+
+  ///Search
+  static const search = '/search';
 }

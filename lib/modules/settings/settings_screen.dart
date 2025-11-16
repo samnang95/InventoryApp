@@ -1,27 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventoryapp/app/constants/app_spacing.dart';
 import 'package:inventoryapp/app/controllers/theme_controller.dart';
 import 'package:inventoryapp/app/widgets/item_card_widget.dart';
+import 'package:inventoryapp/app/widgets/title_text_widget.dart';
 import 'package:inventoryapp/modules/settings/settings_controller.dart';
 import 'package:inventoryapp/modules/settings/widgets/profile_widget.dart';
 import 'package:inventoryapp/app/routes/app_routes.dart';
 
 class SettingsScreen extends GetView<SettingsController> {
   const SettingsScreen({super.key});
-
-  Widget sectionTitle(BuildContext context, String title) {
-    final theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.only(top: 24.0),
-      child: Text(
-        title,
-        style: theme.textTheme.titleSmall?.copyWith(
-          fontWeight: FontWeight.bold,
-          color: theme.colorScheme.secondary,
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,52 +28,30 @@ class SettingsScreen extends GetView<SettingsController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                 /// PROFILE
                 GestureDetector(
                   onTap: () => Get.toNamed(AppRoutes.profile),
                   child: ProfileWidget(),
                 ),
-                const SizedBox(height: 10),
+                SizedBox(height: AppSpacing.paddingL),
 
+                // ----------------- TEAM MEMBERS -----------------
+                TitleTextWidget(text: "Team Member"),
                 ItemCardWidget(
-                  icon: Icons.qr_code_scanner_outlined,
-                  title: "Barcode Scanning",
-                  onTap: () => controller.navigate("Barcode Scanning"),
-                ),
-
-                // ----------------- DATA CENTER -----------------
-                sectionTitle(context, "Data Center"),
-                ItemCardWidget(
-                  icon: Icons.category_outlined,
-                  title: "Attributes",
-                  onTap: () => controller.navigate("Attributes"),
-                ),
-                ItemCardWidget(
-                  icon: Icons.location_on_outlined,
-                  title: "Locations",
-                  onTap: () => controller.navigate("Locations"),
+                  icon: Icons.group_outlined,
+                  title: "Staff",
+                  onTap: () => controller.navigate("Members"),
                 ),
                 ItemCardWidget(
                   icon: Icons.handshake_outlined,
-                  title: "Partners",
+                  title: "Suppliers",
                   onTap: () => controller.navigate("Partners"),
                 ),
-
-                // ----------------- TEAM MEMBERS -----------------
-                sectionTitle(context, "Team Members"),
-                ItemCardWidget(
-                  icon: Icons.people_alt_outlined,
-                  title: "Team Details",
-                  onTap: () => controller.navigate("Team Details"),
-                ),
-                ItemCardWidget(
-                  icon: Icons.group_outlined,
-                  title: "Members",
-                  onTap: () => controller.navigate("Members"),
-                ),
+                SizedBox(height: AppSpacing.paddingM),
 
                 // ----------------- APPEARANCE -----------------
-                sectionTitle(context, "Appearance"),
+                TitleTextWidget(text: "Appearance"),
                 Obx(() => ItemCardWidget(
                     icon: Icons.dark_mode_outlined,
                     title: themeController.isDarkMode.value
@@ -100,19 +66,14 @@ class SettingsScreen extends GetView<SettingsController> {
                     onTap: themeController.toggleTheme,
                   ),
                 ),
-
-                ItemCardWidget(
-                  icon: Icons.display_settings_outlined,
-                  title: "Display Settings",
-                  onTap: () => controller.navigate("Display Settings"),
-                ),
+                SizedBox(height: AppSpacing.paddingM),
 
                 // ----------------- SUPPORT -----------------
-                sectionTitle(context, "Support"),
+                TitleTextWidget(text: "Support"),
                 ItemCardWidget(
-                  icon: Icons.info_outline,
-                  title: "Notice",
-                  onTap: () => controller.navigate("Notice"),
+                  icon: Icons.help_outline,
+                  title: "About Us",
+                  onTap: () => controller.navigate("Help & Docs"),
                 ),
                 ItemCardWidget(
                   icon: Icons.help_outline,
@@ -129,8 +90,7 @@ class SettingsScreen extends GetView<SettingsController> {
                   title: "Legal",
                   onTap: () => controller.navigate("Legal"),
                 ),
-
-                const SizedBox(height: 30),
+                SizedBox(height: AppSpacing.paddingM),
                 Center(
                   child: Text(
                     "App Version 3.3.3+485",
@@ -139,7 +99,7 @@ class SettingsScreen extends GetView<SettingsController> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: AppSpacing.paddingM),
               ],
             ),
           ),

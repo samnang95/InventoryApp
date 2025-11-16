@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:inventoryapp/app/constants/app_spacing.dart';
 
 class SummaryCardWidget extends StatelessWidget {
-  final String date;
+  final String? date;
   final List<SummaryItem> items;
+  final VoidCallback? onDateTap; // callback when clicking date or icon
+  final bool showDateIcon;
 
   const SummaryCardWidget({
     super.key,
-    required this.date,
+    this.date,
     required this.items,
+    this.onDateTap,
+    this.showDateIcon = true,
   });
 
   @override
@@ -32,28 +37,35 @@ class SummaryCardWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Date & More Icon
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  date,
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                    color: Colors.white70,
-                  ),
+            if (date != null)
+              GestureDetector(
+                onTap: onDateTap,
+                child: Row(
+                  children: [
+                    Text(
+                      date!,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: Colors.white70,
+                      ),
+                    ),
+                    if (showDateIcon) ...[
+                      const SizedBox(width: 8),
+                      Icon(
+                        Icons.calendar_today,
+                        color: Colors.white70,
+                        size: 18,
+                      ),
+                    ]
+                  ],
                 ),
-                const Icon(Icons.more_horiz, color: Colors.white),
-              ],
-            ),
-            const SizedBox(height: 16),
-
+              ),
+            if (date != null) SizedBox(height: AppSpacing.paddingM),
             // Summary Items
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: items
-                  .map((item) => _buildSummaryItem(context, item))
-                  .toList(),
+              children: items.map((item) => _buildSummaryItem(context, item)).toList(),
             ),
           ],
         ),
@@ -66,7 +78,6 @@ class SummaryCardWidget extends StatelessWidget {
 
     return Column(
       children: [
-        // Optional icon with colored background
         if (item.icon != null)
           Container(
             padding: const EdgeInsets.all(10),
@@ -77,7 +88,6 @@ class SummaryCardWidget extends StatelessWidget {
             child: Icon(item.icon, color: item.color, size: 28),
           ),
         if (item.icon != null) const SizedBox(height: 8),
-
         Text(
           item.value,
           style: theme.textTheme.headlineSmall?.copyWith(
