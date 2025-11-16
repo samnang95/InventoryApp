@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:inventoryapp/app/widgets/summary_card_widget.dart';
 
 class TransactionsController extends GetxController {
+
   // Transactions list
   final transactions = <Map<String, dynamic>>[].obs;
 
@@ -24,16 +25,6 @@ class TransactionsController extends GetxController {
         "icon": Icons.north,
         "title": "Stock Out",
         "desc": "Remove item from inventory by choosing a location and quantity.",
-      },
-      {
-        "icon": Icons.east,
-        "title": "Move Stock",
-        "desc": "Transfer items between locations to stay organized and updated.",
-      },
-      {
-        "icon": Icons.north_east,
-        "title": "Adjust Stock",
-        "desc": "Update item quantities to match actual stock and reconcile discrepancies in the system.",
       },
     ]);
 
@@ -79,4 +70,5 @@ class TransactionsController extends GetxController {
         Get.snackbar("Unknown", "No screen available for $title");
     }
   }
+
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventoryapp/app/constants/app_spacing.dart';
 
 class AddItemBottomsheet extends StatefulWidget {
   const AddItemBottomsheet({super.key});
@@ -50,23 +51,18 @@ class _AddItemBottomsheetState extends State<AddItemBottomsheet> {
                 ),
               ),
             ),
-
             Text(
               "Add New Item",
               style: theme.textTheme.headlineSmall
                   ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
-
-            // Product Name
             _buildTextField(
               controller: productNameController,
               label: "Product Name",
               icon: Icons.inventory_2_outlined,
             ),
             const SizedBox(height: 16),
-
-            // Category Dropdown
             _buildDropdown(
               value: selectedCategory,
               label: "Category",
@@ -75,8 +71,6 @@ class _AddItemBottomsheetState extends State<AddItemBottomsheet> {
               onChanged: (value) => setState(() => selectedCategory = value),
             ),
             const SizedBox(height: 16),
-
-            // Brand Dropdown
             _buildDropdown(
               value: selectedBrand,
               label: "Brand",
@@ -85,8 +79,6 @@ class _AddItemBottomsheetState extends State<AddItemBottomsheet> {
               onChanged: (value) => setState(() => selectedBrand = value),
             ),
             const SizedBox(height: 16),
-
-            // Price
             _buildTextField(
               controller: priceController,
               label: "Price",
@@ -94,8 +86,6 @@ class _AddItemBottomsheetState extends State<AddItemBottomsheet> {
               keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 16),
-
-            // Description
             _buildTextField(
               controller: descriptionController,
               label: "Description",
@@ -104,27 +94,17 @@ class _AddItemBottomsheetState extends State<AddItemBottomsheet> {
             ),
             const SizedBox(height: 24),
 
-            // Save Button
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
                 icon: const Icon(Icons.save),
                 label: const Text("Save"),
                 onPressed: () {
-                  Navigator.pop(context);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Item Added Successfully")),
-                  );
+
                 },
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: AppSpacing.paddingXL),
           ],
         ),
       ),

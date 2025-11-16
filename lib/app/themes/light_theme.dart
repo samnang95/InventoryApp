@@ -29,9 +29,10 @@ final ThemeData lightTheme = ThemeData(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      backgroundColor: AppColors.secondary,
+      backgroundColor: AppColors.primary,
       foregroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      padding: const EdgeInsets.symmetric(vertical: 16),
     ),
   ),
   dividerColor: Colors.grey.shade200,

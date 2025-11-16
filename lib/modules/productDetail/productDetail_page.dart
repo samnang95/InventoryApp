@@ -7,7 +7,7 @@ class ProductdetailPage {
   static final routes = [
     GetPage(
       name: AppRoutes.productDetail,
-      page: () => ProductDetailView(),
+      page: () => ProductDetailScreen(),
       binding: ProductdetailBinding(),
     ),
   ];

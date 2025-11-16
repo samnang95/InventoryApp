@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:inventoryapp/app/constants/app_widget_size.dart';
 
 class ItemCardWidget extends StatelessWidget {
   final IconData? icon;
@@ -66,8 +67,8 @@ class ItemCardWidget extends StatelessWidget {
               ),
               trailing ??
                   (showArrow
-                      ? Icon(Icons.chevron_right,
-                      color: theme.colorScheme.onSurfaceVariant)
+                      ? Icon(Icons.arrow_circle_right_outlined,
+                      color: theme.colorScheme.onSurfaceVariant, size: AppWidgetSize.iconXS)
                       : const SizedBox.shrink()),
             ],
           ),
