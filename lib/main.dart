@@ -30,7 +30,7 @@ class InventoryApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'Inventory App',
           theme: Get.find<ThemeController>().theme,
-          initialRoute: AppRoutes.navigationbotton,
+          initialRoute: AppRoutes.splash,
           getPages: AppPages.pages,
         );
       },
