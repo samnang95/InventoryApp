@@ -36,6 +36,7 @@ class LoginScreen extends GetView<LoginController> {
             ),
             SizedBox(height: AppSpacing.paddingXXL),
             _buttonLogin(),
+            SizedBox(height: AppSpacing.paddingXS),
             _signup(context),
           ],
         ),
@@ -78,8 +79,6 @@ class LoginScreen extends GetView<LoginController> {
             'Please login to access your account!',
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
               color: AppColors.greyColor
-              // fontWeight: FontWeight.w600,
-              // color: Theme.of(context).colorScheme.secondary,
             ),
             // textAlign: TextAlign.center,
           ),
