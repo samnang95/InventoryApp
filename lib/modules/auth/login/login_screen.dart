@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventoryapp/app/constants/app_color.dart';
+import 'package:inventoryapp/app/constants/app_spacing.dart';
+import 'package:inventoryapp/app/constants/app_string.dart';
 import 'package:inventoryapp/app/routes/app_routes.dart';
 import 'package:inventoryapp/modules/auth/login/login_controller.dart';
 
@@ -13,95 +16,78 @@ class LoginScreen extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
-          child: ListView(
-            children: [
-              const SizedBox(height: 60),
-              _images(),
-              const SizedBox(height: 20),
-              _title(context),
-              const SizedBox(height: 40),
-              _subtitle(context),
-              const SizedBox(height: 20),
-
-              // ✅ Form with validators
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    _emailForm(),
-                    const SizedBox(height: 20),
-                    _passwordForm(),
-                  ],
-                ),
+      body: Padding(
+        padding: EdgeInsets.all(AppSpacing.paddingL),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _images(context),
+            SizedBox(height: AppSpacing.paddingXXL),
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  _emailForm(),
+                  SizedBox(height: AppSpacing.paddingS),
+                  _passwordForm(),
+                ],
               ),
-
-              const SizedBox(height: 30),
-              _buttonLogin(),
-              const SizedBox(height: 20),
-              _signup(context),
-              const SizedBox(height: 20),
-            ],
-          ),
+            ),
+            SizedBox(height: AppSpacing.paddingXXL),
+            _buttonLogin(),
+            _signup(context),
+          ],
         ),
       ),
     );
   }
 
-  Widget _images() {
+  Widget _images(BuildContext context) {
     return Center(
-      child: ClipOval(
-        child: Image.asset(
-          'assets/images/s2.jpg',
-          width: 200,
-          height: 200,
-          fit: BoxFit.cover, // cover the circle
-          errorBuilder: (context, error, stackTrace) {
-            return Container(
-              width: 200,
-              height: 200,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                shape: BoxShape.circle, // make fallback container circular
-              ),
-              child: Icon(
-                Icons.inventory_2,
-                size: 100,
-                color: Colors.grey[600],
-              ),
-            );
-          },
-        ),
+      child: Column(
+        children: [
+          Image.asset(
+            'assets/images/logo.png',
+            scale: 10,
+            errorBuilder: (context, error, stackTrace) {
+              return Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(
+                  Icons.inventory_2,
+                  size: 100,
+                  color: Colors.grey[600],
+                ),
+              );
+            },
+          ),
+          Text(
+            'Login',
+            style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            textAlign: TextAlign.center,
+          ),
+          Text(
+            'Please login to access your account!',
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              color: AppColors.greyColor
+              // fontWeight: FontWeight.w600,
+              // color: Theme.of(context).colorScheme.secondary,
+            ),
+            // textAlign: TextAlign.center,
+          ),
+        ],
       ),
     );
   }
 
-  Widget _title(context) {
-    return Text(
-      'InventoryApp',
-      style: Theme.of(context).textTheme.displaySmall?.copyWith(
-        fontWeight: FontWeight.w600,
-        color: Theme.of(context).colorScheme.primary,
-      ),
-      textAlign: TextAlign.center,
-    );
-  }
-
-  Widget _subtitle(context) {
-    return Text(
-      'Please login to your account',
-      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-        fontWeight: FontWeight.w600,
-        color: Theme.of(context).colorScheme.secondary,
-      ),
-      // textAlign: TextAlign.center,
-    );
-  }
-
-  // ✅ Email Form Field
   Widget _emailForm() {
     return TextFormField(
       controller: emailController,
@@ -124,7 +110,6 @@ class LoginScreen extends GetView<LoginController> {
     );
   }
 
-  // ✅ Password Form Field with Validator
   Widget _passwordForm() {
     return TextFormField(
       controller: passwordController,
@@ -147,7 +132,6 @@ class LoginScreen extends GetView<LoginController> {
     );
   }
 
-  // ✅ Button checks the form validation
   Widget _buttonLogin() {
     return SizedBox(
       width: double.infinity,
