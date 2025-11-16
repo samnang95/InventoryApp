@@ -36,7 +36,7 @@ class LoginScreen extends GetView<LoginController> {
             ),
             SizedBox(height: AppSpacing.paddingXXL),
             _buttonLogin(),
-            SizedBox(height: AppSpacing.paddingXS),
+            SizedBox(height: AppSpacing.paddingS),
             _signup(context),
           ],
         ),
@@ -134,14 +134,9 @@ class LoginScreen extends GetView<LoginController> {
   Widget _buttonLogin() {
     return SizedBox(
       width: double.infinity,
-      height: 50,
       child: Obx(
         () => ElevatedButton(
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.indigo.shade900,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
           ),
           onPressed: () {
             if (_formKey.currentState!.validate()) {
@@ -165,10 +160,7 @@ class LoginScreen extends GetView<LoginController> {
                     strokeWidth: 2,
                   ),
                 )
-              : const Text(
-                  'Login',
-                  style: TextStyle(fontSize: 16, color: Colors.white),
-                ),
+              : Text('Login'),
         ),
       ),
     );
@@ -184,8 +176,8 @@ class LoginScreen extends GetView<LoginController> {
           child: Text(
             'Sign Up',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-              color: Theme.of(context).colorScheme.secondary,
+              fontWeight: FontWeight.w700,
+              color: AppColors.primary,
             ),
           ),
         ),

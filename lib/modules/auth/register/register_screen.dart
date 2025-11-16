@@ -24,16 +24,10 @@ class RegisterScreen extends GetView<RegisterController> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.indigo.shade900,
-                  ),
                   onPressed: () {
                     Get.offNamed(AppRoutes.login);
                   },
-                  child: const Text(
-                    'Sign Up',
-                    style: TextStyle(fontSize: 16, color: Colors.white),
-                  ),
+                  child: Text('Sign Up'),
                 ),
               ),
             ],
