@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventoryapp/api/controllers/auth_controller.dart';
 import 'package:inventoryapp/app/constants/app_spacing.dart';
 import 'package:inventoryapp/app/controllers/theme_controller.dart';
 import 'package:inventoryapp/app/widgets/item_card_widget.dart';
@@ -9,7 +10,9 @@ import 'package:inventoryapp/modules/settings/widgets/profile_widget.dart';
 import 'package:inventoryapp/app/routes/app_routes.dart';
 
 class SettingsScreen extends GetView<SettingsController> {
-  const SettingsScreen({super.key});
+  SettingsScreen({super.key});
+
+  final AuthController authController = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -100,6 +103,11 @@ class SettingsScreen extends GetView<SettingsController> {
                   ),
                 ),
                 SizedBox(height: AppSpacing.paddingM),
+                ItemCardWidget(
+                  icon: Icons.login,
+                  title: "Logout",
+                  onTap: () => authController.logout(),
+                ),
               ],
             ),
           ),

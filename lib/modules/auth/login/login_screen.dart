@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventoryapp/api/controllers/auth_controller.dart';
 import 'package:inventoryapp/app/constants/app_color.dart';
 import 'package:inventoryapp/app/constants/app_spacing.dart';
-import 'package:inventoryapp/app/constants/app_string.dart';
 import 'package:inventoryapp/app/routes/app_routes.dart';
-import 'package:inventoryapp/modules/auth/login/login_controller.dart';
 
-class LoginScreen extends GetView<LoginController> {
+class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
+
+  final AuthController controller = Get.find();
 
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
@@ -18,27 +19,32 @@ class LoginScreen extends GetView<LoginController> {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.all(AppSpacing.paddingL),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            _images(context),
-            SizedBox(height: AppSpacing.paddingXXL),
-            Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  _emailForm(),
-                  SizedBox(height: AppSpacing.paddingS),
-                  _passwordForm(),
-                ],
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: AppSpacing.paddingXXL),
+              SizedBox(height: AppSpacing.paddingXXL),
+              SizedBox(height: AppSpacing.paddingXXL),
+              _images(context),
+              SizedBox(height: AppSpacing.paddingXXL),
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    _emailForm(),
+                    SizedBox(height: AppSpacing.paddingS),
+                    _passwordForm(),
+                  ],
+                ),
               ),
-            ),
-            SizedBox(height: AppSpacing.paddingXXL),
-            _buttonLogin(),
-            SizedBox(height: AppSpacing.paddingS),
-            _signup(context),
-          ],
+              SizedBox(height: AppSpacing.paddingXXL),
+              _buttonLogin(),
+              SizedBox(height: AppSpacing.paddingS),
+              _signup(context),
+            ],
+          ),
         ),
       ),
     );
@@ -78,9 +84,8 @@ class LoginScreen extends GetView<LoginController> {
           Text(
             'Please login to access your account!',
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: AppColors.greyColor
+                color: AppColors.greyColor
             ),
-            // textAlign: TextAlign.center,
           ),
         ],
       ),
@@ -134,39 +139,28 @@ class LoginScreen extends GetView<LoginController> {
   Widget _buttonLogin() {
     return SizedBox(
       width: double.infinity,
-      child: Obx(
-        () => ElevatedButton(
-          style: ElevatedButton.styleFrom(
-          ),
+      child: Obx(() => ElevatedButton(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               controller.login();
             } else {
-              Get.snackbar(
-                "Error",
-                "Please fill all fields correctly",
-                backgroundColor: Colors.red.shade600,
-                colorText: Colors.white,
-                snackPosition: SnackPosition.BOTTOM,
-              );
+
             }
           },
-          child: controller.isLoading.value
-              ? const SizedBox(
-                  width: 20,
-                  height: 20,
-                  child: CircularProgressIndicator(
-                    color: Colors.white,
-                    strokeWidth: 2,
-                  ),
-                )
-              : Text('Login'),
+          child: controller.isLoading.value ? const SizedBox(
+            width: 20,
+            height: 20,
+            child: CircularProgressIndicator(
+              color: Colors.white,
+              strokeWidth: 2,
+            ),
+          ) : const Text('Login'),
         ),
       ),
     );
   }
 
-  Widget _signup(context) {
+  Widget _signup(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

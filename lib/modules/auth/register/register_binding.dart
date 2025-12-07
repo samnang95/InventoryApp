@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
-import 'package:inventoryapp/modules/auth/register/register_controller.dart';
+import 'package:inventoryapp/api/controllers/auth_controller.dart';
 
 class RegisterBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<RegisterController>(() => RegisterController());
+    Get.lazyPut<AuthController>(() => AuthController());
   }
 }

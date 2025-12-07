@@ -1,37 +1,43 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:inventoryapp/api/controllers/auth_controller.dart';
 import 'package:inventoryapp/app/constants/app_color.dart';
 import 'package:inventoryapp/app/constants/app_spacing.dart';
-import 'package:inventoryapp/modules/auth/register/register_controller.dart';
-import 'package:inventoryapp/app/routes/app_routes.dart';
 
-class RegisterScreen extends GetView<RegisterController> {
-  const RegisterScreen({super.key});
+class RegisterScreen extends StatelessWidget {
+  RegisterScreen({super.key});
+
+  final AuthController controller = Get.find();
+
+  final _formKey = GlobalKey<FormState>();
+  final nameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
+  Future<void> _pickAvatar() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      controller.setAvatar(File(pickedFile.path));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 60),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              _images(context),
-              SizedBox(height: AppSpacing.paddingXXL),
-              _form(),
-              SizedBox(height: AppSpacing.paddingXXL),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Get.offNamed(AppRoutes.login);
-                  },
-                  child: Text('Sign Up'),
-                ),
-              ),
-            ],
-          ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(AppSpacing.paddingL),
+        child: Column(
+          children: [
+            SizedBox(height: AppSpacing.paddingXXL),
+            SizedBox(height: AppSpacing.paddingXXL),
+            _images(context),
+            SizedBox(height: AppSpacing.paddingXXL),
+            // _avatar(),
+            // SizedBox(height: AppSpacing.paddingXXL),
+            _form(),
+          ],
         ),
       ),
     );
@@ -61,7 +67,7 @@ class RegisterScreen extends GetView<RegisterController> {
             },
           ),
           Text(
-            'Sign Up',
+            'Register',
             style: Theme.of(context).textTheme.headlineLarge?.copyWith(
               fontWeight: FontWeight.w600,
               color: Theme.of(context).colorScheme.primary,
@@ -69,59 +75,81 @@ class RegisterScreen extends GetView<RegisterController> {
             textAlign: TextAlign.center,
           ),
           Text(
-            'Please sign up to access your account!',
+            'Please create your new account!',
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                 color: AppColors.greyColor
             ),
-            // textAlign: TextAlign.center,
           ),
         ],
       ),
     );
   }
 
-  Widget _form() {
-    return Column(
-      children: [
-        TextField(
-          onChanged: (v) => controller.email.value = v,
-          decoration: const InputDecoration(
-            labelText: 'Email',
-            prefixIcon: Icon(Icons.email_outlined),
-          ),
-        ),
-        SizedBox(height: AppSpacing.paddingS),
-        Obx(() => TextField(
-          onChanged: (v) => controller.password.value = v,
-          obscureText: !controller.showPassword.value,
-          decoration: InputDecoration(
-            labelText: 'Password',
-            prefixIcon: const Icon(Icons.lock_outline),
-            suffixIcon: IconButton(
-              icon: Icon(
-                controller.showPassword.value ? Icons.visibility : Icons.visibility_off,
-              ),
-              onPressed: controller.togglePassword,
-            ),
-          ),
-        )),
-        SizedBox(height: AppSpacing.paddingS),
-        Obx(() => TextField(
-          onChanged: (v) => controller.confirmPassword.value = v,
-          obscureText: !controller.showConfirmPassword.value,
-          decoration: InputDecoration(
-            labelText: 'Confirm Password',
-            prefixIcon: const Icon(Icons.lock_outline),
-            suffixIcon: IconButton(
-              icon: Icon(
-                controller.showConfirmPassword.value ? Icons.visibility : Icons.visibility_off,
-              ),
-              onPressed: controller.toggleConfirmPassword,
-            ),
-          ),
-        )),
-      ],
-    );
+  Widget _avatar(){
+    return Obx(() => GestureDetector(
+      onTap: _pickAvatar,
+      child: CircleAvatar(
+        radius: 60,
+        backgroundColor: AppColors.greyColor.withOpacity(0.3),
+        backgroundImage: controller.avatarFile.value != null
+            ? FileImage(controller.avatarFile.value!)
+            : null,
+        child: controller.avatarFile.value == null
+            ? const Icon(Icons.add_a_photo, size: 40, color: Colors.white)
+            : null,
+      ),
+    ));
   }
 
+  Widget _form(){
+    return Form(
+      key: _formKey,
+      child: Column(
+        children: [
+          /// Name
+          TextFormField(
+            controller: nameController,
+            onChanged: (value) => controller.name.value = value,
+            decoration: const InputDecoration(labelText: 'Full Name'),
+            validator: (value) => (value == null || value.isEmpty) ? "Enter name" : null,
+          ),
+          SizedBox(height: AppSpacing.paddingS),
+
+          /// Email
+          TextFormField(
+            controller: emailController,
+            onChanged: (value) => controller.email.value = value,
+            decoration: const InputDecoration(labelText: 'Email'),
+            validator: (value) => (value == null || value.isEmpty) ? "Enter email" : null,
+          ),
+          SizedBox(height: AppSpacing.paddingS),
+
+          /// Password
+          TextFormField(
+            controller: passwordController,
+            onChanged: (value) => controller.password.value = value,
+            obscureText: true,
+            decoration: const InputDecoration(labelText: 'Password'),
+            validator: (value) => (value == null || value.length < 6) ? "Password min 6" : null,
+          ),
+          SizedBox(height: AppSpacing.paddingXXL),
+
+          /// Register Button
+          SizedBox(
+            width: double.infinity,
+            child: Obx(() => ElevatedButton(
+              onPressed: () {
+                if (_formKey.currentState!.validate()) {
+                  controller.register();
+                }
+              },
+              child: controller.isLoading.value
+                  ? const CircularProgressIndicator(color: Colors.white)
+                  : const Text('Register'),
+            )),
+          ),
+        ],
+      ),
+    );
+  }
 }
