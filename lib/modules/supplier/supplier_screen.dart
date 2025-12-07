@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:inventoryapp/api/controllers/supplier_controller.dart';
 import 'package:inventoryapp/app/constants/app_color.dart';
 import 'package:inventoryapp/app/constants/app_spacing.dart';
+import 'package:inventoryapp/app/constants/app_widget_size.dart';
+import 'package:inventoryapp/app/widgets/circle_icon_button.dart';
 import 'package:inventoryapp/app/widgets/item_card_widget.dart';
 import 'package:inventoryapp/app/widgets/title_text_widget.dart';
 import 'package:inventoryapp/modules/supplier/widgets/supplier_form.dart';
@@ -94,18 +96,36 @@ class SupplierScreen extends StatelessWidget {
                     icon: Icons.person,
                     title: s.name,
                     subtitle: s.contactInfo,
-                    trailing: GestureDetector(
-                      onTap: (){
-                        controller.deleteSupplier(s.id!.toInt());
-                      },
-                      child: Icon(Icons.delete, color: Colors.red),
+                    // trailing: GestureDetector(
+                    //   onTap: (){
+                    //     controller.deleteSupplier(s.id!.toInt());
+                    //   },
+                    //   child: Icon(Icons.delete, color: Colors.red),
+                    // ),
+                    trailing: Row(
+                      children: [
+                        CircleIconButton(
+                            backgroundColor: Colors.blue.withOpacity(0.8),
+                            size: AppWidgetSize.iconMedium,
+                            icon: Icons.edit,
+                            onTap: (){
+                              Get.bottomSheet(
+                                SupplierForm(supplier: s),
+                                isScrollControlled: true,
+                              );
+                            }
+                        ),
+                        SizedBox(width: AppSpacing.paddingS),
+                        CircleIconButton(
+                            backgroundColor: Colors.red.withOpacity(0.8),
+                            size: AppWidgetSize.iconMedium,
+                            icon: Icons.delete,
+                            onTap: (){
+                              controller.deleteSupplier(s.id!.toInt());
+                            }
+                        ),
+                      ],
                     ),
-                    onTap: (){
-                      Get.bottomSheet(
-                        SupplierForm(supplier: s),
-                        isScrollControlled: true,
-                      );
-                    },
                   );
                 },
               );

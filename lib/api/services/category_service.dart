@@ -6,8 +6,8 @@ import 'package:inventoryapp/app/services/storage_service.dart';
 import 'package:get/get.dart';
 
 class CategoryService {
-  final StorageService _storage = Get.find();
 
+  final StorageService _storage = Get.find();
   String get token => _storage.token ?? '';
 
   // Create
