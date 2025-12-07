@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:inventoryapp/modules/category/category_controller.dart';
+import 'package:inventoryapp/api/controllers/category_controller.dart';
 
 class CategoryBinding extends Bindings {
   @override

@@ -1,6 +1,7 @@
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inventoryapp/app/constants/app_color.dart';
 
 class ProductHeaderWidget extends StatefulWidget {
   final int productId;
@@ -21,18 +22,29 @@ class _ProductHeaderWidgetState extends State<ProductHeaderWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    // SAFETY CHECK
+    if (widget.images.isEmpty) {
+      return const SizedBox(
+        height: 240,
+        child: Center(child: Text("No Image Available")),
+      );
+    }
+
+    // Decode safely
+    Uint8List decodeImage(String data) {
+      final base64Data = data.contains(',') ? data.split(',').last : data;
+      return base64Decode(base64Data);
+    }
 
     return Column(
       children: [
-        // Main Image with Gradient Background & Hero
         Stack(
           children: [
             Container(
-              height: 280,
+              height: 260,
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [AppColors.primary, AppColors.secondary],
+                  colors: [Colors.blue, Colors.deepPurple],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -44,20 +56,21 @@ class _ProductHeaderWidgetState extends State<ProductHeaderWidget> {
               right: 0,
               child: Hero(
                 tag: widget.productId.toString(),
-                child: Image.network(
-                  widget.images[_currentIndex],
+                child: Image.memory(
+                  decodeImage(widget.images[_currentIndex]),
+                  height: 220,
                   fit: BoxFit.fill,
                 ),
               ),
             ),
-            // Back Button
+
             Positioned(
               top: 40,
               left: 16,
               child: CircleAvatar(
-                backgroundColor: Colors.white.withOpacity(0.8),
+                backgroundColor: Colors.white70,
                 child: IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Colors.black),
+                  icon: const Icon(Icons.arrow_back),
                   onPressed: () => Get.back(),
                 ),
               ),
@@ -65,17 +78,15 @@ class _ProductHeaderWidgetState extends State<ProductHeaderWidget> {
           ],
         ),
 
-        // Thumbnail row
         if (widget.images.length > 1)
           SizedBox(
-            height: 70,
+            height: 80,
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: const EdgeInsets.all(12),
               itemCount: widget.images.length,
               itemBuilder: (context, index) {
-                final image = widget.images[index];
-                final isSelected = index == _currentIndex;
+                final img = widget.images[index];
 
                 return GestureDetector(
                   onTap: () {
@@ -83,20 +94,21 @@ class _ProductHeaderWidgetState extends State<ProductHeaderWidget> {
                       _currentIndex = index;
                     });
                   },
-                  child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
-                    margin: const EdgeInsets.only(right: 12),
-                    padding: isSelected ? const EdgeInsets.all(3) : EdgeInsets.zero,
+                  child: Container(
+                    margin: const EdgeInsets.only(right: 10),
+                    padding: _currentIndex == index
+                        ? const EdgeInsets.all(3)
+                        : EdgeInsets.zero,
                     decoration: BoxDecoration(
-                      border: isSelected
-                          ? Border.all(color: theme.colorScheme.primary, width: 2)
+                      border: _currentIndex == index
+                          ? Border.all(color: Colors.blue, width: 2)
                           : null,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
-                      child: Image.network(
-                        image,
+                      child: Image.memory(
+                        decodeImage(img),
                         width: 60,
                         height: 60,
                         fit: BoxFit.cover,

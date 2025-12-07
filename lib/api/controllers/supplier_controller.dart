@@ -9,26 +9,46 @@ class SupplierController extends GetxController {
   RxList<SupplierModel> suppliers = <SupplierModel>[].obs;
   RxBool isLoading = false.obs;
 
-  // Load all suppliers
+  // Current search & sort
+  var searchQuery = ''.obs;
+  var sortOption = ''.obs;
+
+  /// Load suppliers with optional search & sort
   Future<void> loadSuppliers() async {
-    isLoading.value = true;
-    suppliers.value = await _service.getSuppliers();
-    isLoading.value = false;
+    try {
+      isLoading.value = true;
+      suppliers.value = await _service.getSuppliers(
+        search: searchQuery.value,
+        sort: sortOption.value,
+      );
+    } finally {
+      isLoading.value = false;
+    }
   }
 
-  // Create supplier
+  void setSearch(String query) {
+    searchQuery.value = query;
+    loadSuppliers();
+  }
+
+  void setSort(String sort) {
+    sortOption.value = sort;
+    loadSuppliers();
+  }
+
+  /// Create supplier
   Future<void> createSupplier(SupplierModel supplier) async {
     await _service.createSupplier(supplier);
     await loadSuppliers();
   }
 
-  // Update supplier
+  /// Update supplier
   Future<void> updateSupplier(int id, SupplierModel supplier) async {
     await _service.updateSupplier(id, supplier);
     await loadSuppliers();
   }
 
-  // Delete supplier
+  /// Delete supplier
   Future<void> deleteSupplier(int id) async {
     Get.defaultDialog(
       title: "Confirm Delete",

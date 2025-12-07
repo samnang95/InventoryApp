@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventoryapp/api/controllers/product_controller.dart';
 import 'package:inventoryapp/app/constants/app_spacing.dart';
 import 'package:inventoryapp/app/widgets/item_card_widget.dart';
 import 'package:inventoryapp/modules/productDetail/widgets/product_chip_widget.dart';
@@ -7,66 +8,97 @@ import 'package:inventoryapp/modules/productDetail/widgets/product_header_widget
 import 'package:inventoryapp/modules/productDetail/widgets/stock_update_dialog.dart';
 import 'package:inventoryapp/modules/productDetail/widgets/supplier_update_dialog.dart';
 
-class ProductDetailScreen extends StatelessWidget {
-  ProductDetailScreen({super.key});
+class ProductDetailScreen extends StatefulWidget {
+  final int productId;
 
-  // ---------------------------------------------------------
-  // FIXED PRODUCT DATA (NO ARGUMENTS)
-  // ---------------------------------------------------------
-  final item = {
-    "id": 1,
-    "name": "Wireless Headphones",
-    "price": 59.99,
-    "image":
-    "https://images.unsplash.com/photo-1518443737228-7d3f339a7e31?w=600",
-    "category": "Electronics",
-    "brand": "Sony",
-    "sku": "WH-1000XM",
-    "stock": 42,
-    "supplier": "Sony Supplier Ltd",
-    "supplier_contact": "+855 98 888 777",
-    "description":
-    "Premium wireless headphones with noise cancellation, deep bass, and long-lasting battery performance.",
-  };
+  const ProductDetailScreen({super.key, required this.productId});
+
+  @override
+  State<ProductDetailScreen> createState() => _ProductDetailScreenState();
+}
+
+class _ProductDetailScreenState extends State<ProductDetailScreen> {
+
+  final ProductController controller = Get.put(ProductController());
+
+  @override
+  void initState() {
+    super.initState();
+    controller.loadProductDetail(widget.productId);
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
     return Scaffold(
-      backgroundColor: theme.scaffoldBackgroundColor,
-      body: Column(
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        final product = controller.productDetail.value;
+
+        if (product == null) {
+          return const Center(child: Text("Product not found"));
+        }
+
+        return Column(
+          children: [
+            _buildHeader(product),
+            Expanded(child: _buildContent(theme, context, product)),
+          ],
+        );
+      }),
+    );
+  }
+
+  /// HEADER WITH IMAGE
+  Widget _buildHeader(product) {
+    final imgs = product.images;
+
+    // If no images, show placeholder with back button
+    if (imgs == null || imgs.isEmpty) {
+      return Stack(
         children: [
-          _buildHeader(theme),
-          Expanded(child: _buildContent(theme, context)),
+          Container(
+            height: 240,
+            width: double.infinity,
+            color: Colors.grey.shade200,
+            child: const Center(
+              child: Text(
+                "No Image",
+                style: TextStyle(fontSize: 16, color: Colors.black54),
+              ),
+            ),
+          ),
+
+          // Back button
+          Positioned(
+            top: 40,
+            left: 16,
+            child: CircleAvatar(
+              backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.12),
+              child: IconButton(
+                icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.primary),
+                onPressed: () => Get.back(),
+              ),
+            ),
+          ),
         ],
-      ),
-    );
-  }
+      );
+    }
 
-  // ======================================================
-  // HEADER WITH GRADIENT + HERO
-  // ======================================================
-  Widget _buildHeader(ThemeData theme) {
-    final List<String> productImages = [
-      "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600",
-      "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=600",
-      "https://images.pexels.com/photos/335257/pexels-photo-335257.jpeg",
-      "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg",
-      "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=600",
-      "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=600",
-      "https://images.pexels.com/photos/335257/pexels-photo-335257.jpeg",
-      "https://images.pexels.com/photos/90946/pexels-photo-90946.jpeg"
-    ];
-
+    // If images exist, use ProductHeaderWidget
     return ProductHeaderWidget(
-      productId: 1,
-      images: productImages,
+      productId: product.id!,
+      images: imgs,
     );
-
   }
 
-  Widget _buildContent(ThemeData theme, BuildContext context) {
+  /// MAIN CONTENT
+  Widget _buildContent(
+      ThemeData theme, BuildContext context, product) {
     return Container(
       padding: EdgeInsets.all(AppSpacing.paddingSM),
       decoration: BoxDecoration(
@@ -79,35 +111,50 @@ class ProductDetailScreen extends StatelessWidget {
           children: [
             // Title + Price
             Text(
-              item["name"].toString(),
+              product.name ?? "No Name",
               style: theme.textTheme.titleLarge!.copyWith(
                 fontWeight: FontWeight.bold,
                 fontSize: 24,
               ),
             ),
             Text(
-              "\$${item["price"]}",
+              "\$${product.price}",
               style: theme.textTheme.titleLarge!.copyWith(
                 fontWeight: FontWeight.bold,
                 color: theme.colorScheme.primary,
                 fontSize: 22,
               ),
             ),
+
             SizedBox(height: AppSpacing.paddingL),
+
+            // Chips
             Wrap(
               spacing: 10,
               runSpacing: 10,
               children: [
-                productChipWidget(theme, Icons.category, item["category"].toString()),
-                productChipWidget(theme, Icons.store, item["brand"].toString()),
-                productChipWidget(theme, Icons.qr_code, "SKU: ${item["sku"]}"),
+                productChipWidget(
+                  theme,
+                  Icons.category,
+                  (product.category != null && product.category!.isNotEmpty)
+                      ? (product.category!["name"] ?? "N/A")
+                      : "N/A",
+                ),
+                productChipWidget(
+                    theme, Icons.store, product.brand ?? "N/A"),
+                productChipWidget(theme, Icons.qr_code,
+                    "SKU: ${product.sku ?? "N/A"}"),
               ],
             ),
+
             SizedBox(height: AppSpacing.paddingL),
-            _buildStockCard(context),
+
+            _buildStockCard(context, product),
             SizedBox(height: AppSpacing.paddingXS),
-            _buildSupplierCard(),
+            _buildSupplierCard(product),
+
             SizedBox(height: AppSpacing.paddingL),
+
             // Description
             Text(
               "Description",
@@ -117,8 +164,9 @@ class ProductDetailScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 8),
+
             Text(
-              item["description"].toString(),
+              product.description ?? "No description",
               style: theme.textTheme.bodyMedium!.copyWith(
                 height: 1.5,
                 color: theme.colorScheme.onSurface.withOpacity(.7),
@@ -132,18 +180,19 @@ class ProductDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildStockCard(BuildContext context) {
+  /// STOCK CARD
+  Widget _buildStockCard(BuildContext context, product) {
     return ItemCardWidget(
       icon: Icons.inventory_2_rounded,
       title: "Stock Available",
-      subtitle: "${item["stock"]} items",
+      subtitle: "${product.stockQuantity} items",
       onTap: () {
         showDialog(
           context: context,
           builder: (_) => StockUpdateDialog(
-            item: item,
+            item: product,
             onUpdate: (type, qty, date) {
-
+              // Add your logic here
             },
           ),
         );
@@ -153,17 +202,23 @@ class ProductDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSupplierCard() {
+  /// SUPPLIER CARD
+  Widget _buildSupplierCard(product) {
+
+    final hasSupplier = product.supplier != null && product.supplier!.isNotEmpty;
+    final supplierName = hasSupplier ? (product.supplier!["name"] ?? "No Supplier") : "No Supplier";
+    final supplierContact = hasSupplier ? (product.supplier!["contact"] ?? "No contact") : "No contact";
+
     return ItemCardWidget(
       icon: Icons.business_center,
-      title: item["supplier"].toString(),
-      subtitle: item["supplier_contact"].toString(),
+      title: supplierName,
+      subtitle: supplierContact,
       onTap: () {
         showDialog(
           context: Get.context!,
           builder: (_) => SupplierDialogWidget(
             onSubmit: (name, contact, address) {
-
+              // Your update logic here...
             },
           ),
         );
@@ -172,5 +227,4 @@ class ProductDetailScreen extends StatelessWidget {
       trailing: null,
     );
   }
-
 }
