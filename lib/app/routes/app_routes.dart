@@ -38,4 +38,7 @@ class AppRoutes {
 
   ///Search
   static const search = '/search';
+
+  /// Supplier
+  static const supplier = '/supplier';
 }

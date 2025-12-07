@@ -87,34 +87,6 @@ class DashboardView extends StatelessWidget {
     );
   }
 
-  final recentActivities = [
-    {
-      "icon": Icons.add_shopping_cart,
-      "title": "New product added",
-      "subtitle": "Laptop X200 added to Electronics",
-    },
-    {
-      "icon": Icons.download,
-      "title": "Stock updated",
-      "subtitle": "12 pcs of Laptop X200 added",
-    },
-    {
-      "icon": Icons.payment,
-      "title": "Order completed",
-      "subtitle": "Order #1023 has been completed",
-    },
-    {
-      "icon": Icons.people,
-      "title": "New supplier added",
-      "subtitle": "Supplier ABC added to your list",
-    },
-    {
-      "icon": Icons.remove_shopping_cart,
-      "title": "Product removed",
-      "subtitle": "Old Mouse Model removed from inventory",
-    },
-  ];
-
   Widget _activities() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,21 +94,40 @@ class DashboardView extends StatelessWidget {
         TitleTextWidget(
           text: "Recent Activities",
         ),
-        ListView.separated(
-          shrinkWrap: true, // Important!
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: recentActivities.length,
-          separatorBuilder: (_, __) => SizedBox(height: 2),
-          itemBuilder: (context, index) {
-            final activity = recentActivities[index];
-            return ItemCardWidget(
-              showArrow: false,
-              icon: activity["icon"] as IconData?,
-              title: activity["title"] as String,
-              subtitle: activity["subtitle"] as String,
-              onTap: () {},
-            );
-          },
+        ItemCardWidget(
+          showArrow: false,
+          icon: Icons.add_shopping_cart,
+          title: "New product added",
+          subtitle: "Laptop X200 added to Electronics",
+          onTap: () {},
+        ),
+        ItemCardWidget(
+          showArrow: false,
+          icon: Icons.download,
+          title: "Stock updated",
+          subtitle: "12 pcs of Laptop X200 added",
+          onTap: () {},
+        ),
+        ItemCardWidget(
+          showArrow: false,
+          icon: Icons.payment,
+          title: "Order completed",
+          subtitle: "Order #1023 has been completed",
+          onTap: () {},
+        ),
+        ItemCardWidget(
+          showArrow: false,
+          icon: Icons.people,
+          title: "New supplier added",
+          subtitle: "Supplier ABC added to your list",
+          onTap: () {Get.toNamed(AppRoutes.supplier);},
+        ),
+        ItemCardWidget(
+          showArrow: false,
+          icon: Icons.remove_shopping_cart,
+          title: "Product removed",
+          subtitle: "Old Mouse Model removed from inventory",
+          onTap: () {},
         ),
       ],
     );
