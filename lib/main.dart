@@ -6,6 +6,7 @@ import 'package:inventoryapp/app/controllers/ratio_controller.dart';
 import 'package:inventoryapp/app/controllers/theme_controller.dart';
 import 'package:inventoryapp/app/routes/app_pages.dart';
 import 'package:inventoryapp/app/routes/app_routes.dart';
+import 'package:inventoryapp/app/services/storage_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,6 +14,7 @@ void main() async {
 
   Get.put(ThemeController(), permanent: true);
   Get.put(RatioController());
+  Get.put(StorageService());
 
   runApp(InventoryApp());
 }

@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:inventoryapp/api/controllers/category_controller.dart';
 import 'package:inventoryapp/modules/bottom_nav/bottom_nav_controller.dart';
 import 'package:inventoryapp/modules/category/category_controller.dart';
 import 'package:inventoryapp/modules/dashboard/dashboard_controller.dart';
