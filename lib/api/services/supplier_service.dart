@@ -10,11 +10,15 @@ class SupplierService {
   String get _token => _storage.token ?? "";
 
   // GET: all suppliers
-  Future<List<SupplierModel>> getSuppliers() async {
-    final res = await http.get(
-      Uri.parse("${AppConstants.baseUrl}/api/suppliers"),
-      headers: AppConstants.headers(_token),
-    );
+  Future<List<SupplierModel>> getSuppliers({String? search, String? sort}) async {
+    final queryParams = <String, String>{};
+    if (search != null && search.isNotEmpty) queryParams['q'] = search;
+    if (sort != null && sort.isNotEmpty) queryParams['sort'] = sort;
+
+    final uri = Uri.parse("${AppConstants.baseUrl}/api/suppliers")
+        .replace(queryParameters: queryParams);
+
+    final res = await http.get(uri, headers: AppConstants.headers(_token));
 
     if (res.statusCode == 200) {
       final List data = jsonDecode(res.body);
