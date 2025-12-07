@@ -38,7 +38,6 @@ class ProductService {
   Future<ProductModel> createProduct(ProductModel product) async {
     final uri = Uri.parse("${AppConstants.baseUrl}/api/products");
     final res = await http.post(uri, headers: AppConstants.headers(token), body: jsonEncode(product.toJson()));
-    print(res.body);
     if (res.statusCode == 201) {
       return ProductModel.fromJson(jsonDecode(res.body));
     } else {
@@ -70,9 +69,6 @@ class ProductService {
   Future<ProductModel> getProductDetail(int id) async {
     final uri = Uri.parse("${AppConstants.baseUrl}/api/products/$id");
     final res = await http.get(uri, headers: AppConstants.headers(token));
-
-    print(res.body);
-
     if (res.statusCode == 200) {
       final data = jsonDecode(res.body);
       return ProductModel.fromJson(data);

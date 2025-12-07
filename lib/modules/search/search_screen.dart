@@ -114,10 +114,10 @@ class SearchScreen extends StatelessWidget {
                     final product = controller.products[index];
                     return ProductCardWidget(
                       images: product.images!,
-                      name: product.name,
+                      name: product.name!,
                       category: product.category?['name'] ?? 'N/A',
-                      stock: product.stockQuantity,
-                      price: product.price,
+                      stock: product.stockQuantity!,
+                      price: product.price!,
                       onTapEdit: () {
                         ProductFormBottomSheet.open(product: product);
                       },

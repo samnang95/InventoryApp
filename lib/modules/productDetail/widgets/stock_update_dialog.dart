@@ -3,20 +3,16 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class StockUpdateDialog extends StatefulWidget {
-  final Map<String, dynamic> item;
-  final Function(String type, int quantity, DateTime date) onUpdate;
 
-  const StockUpdateDialog({
-    super.key,
-    required this.item,
-    required this.onUpdate,
-  });
+  final Map<String, dynamic> item;
+  const StockUpdateDialog({super.key, required this.item});
 
   @override
   State<StockUpdateDialog> createState() => _StockUpdateDialogState();
 }
 
 class _StockUpdateDialogState extends State<StockUpdateDialog> {
+
   final TextEditingController _quantityController = TextEditingController();
   late Rx<DateTime> _selectedDate;
   late RxString _stockType;
@@ -36,16 +32,18 @@ class _StockUpdateDialogState extends State<StockUpdateDialog> {
         padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Title
             Text(
-              "Update Stock",
-              style: Theme.of(context).textTheme.titleLarge
+              "Update Stock - ${widget.item["name"]}",
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge
                   ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
 
-            // Stock Type Toggle
+            // Stock Type
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -92,8 +90,8 @@ class _StockUpdateDialogState extends State<StockUpdateDialog> {
                 padding: const EdgeInsets.symmetric(
                     vertical: 12, horizontal: 16),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: Colors.grey.shade400),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -111,30 +109,30 @@ class _StockUpdateDialogState extends State<StockUpdateDialog> {
               width: double.infinity,
               child: Obx(() => ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: _stockType.value == "In"
-                      ? Colors.green
-                      : Colors.red,
+                  backgroundColor:
+                  _stockType.value == "In" ? Colors.green : Colors.red,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12)),
                 ),
                 onPressed: () {
-                  // final quantity =
-                  //     int.tryParse(_quantityController.text) ?? 0;
-                  // if (quantity <= 0) {
-                  //   Get.snackbar("Error", "Please enter a valid quantity");
-                  //   return;
-                  // }
-                  // widget.onUpdate(
-                  //     _stockType.value, quantity, _selectedDate.value);
-                  Get.back();
+                  final quantity = int.tryParse(_quantityController.text) ?? 0;
+                  if (quantity <= 0) {
+                    Get.snackbar("Error", "Enter a valid quantity");
+                    return;
+                  }
+
+                  // UI-only: Show dialog with result
+                  Get.back(result: {
+                    "productId": widget.item["id"],
+                    "type": _stockType.value,
+                    "quantity": quantity,
+                    "date": _selectedDate.value,
+                  });
                 },
                 child: const Text(
                   "Update Stock",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16),
+                  style: TextStyle(color: Colors.white),
                 ),
               )),
             ),

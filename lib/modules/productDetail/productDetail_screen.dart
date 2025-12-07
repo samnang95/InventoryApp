@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventoryapp/api/controllers/product_controller.dart';
 import 'package:inventoryapp/app/constants/app_spacing.dart';
+import 'package:inventoryapp/app/constants/app_widget_size.dart';
+import 'package:inventoryapp/app/widgets/circle_icon_button.dart';
 import 'package:inventoryapp/app/widgets/item_card_widget.dart';
 import 'package:inventoryapp/modules/productDetail/widgets/product_chip_widget.dart';
 import 'package:inventoryapp/modules/productDetail/widgets/product_header_widget.dart';
-import 'package:inventoryapp/modules/productDetail/widgets/stock_update_dialog.dart';
-import 'package:inventoryapp/modules/productDetail/widgets/supplier_update_dialog.dart';
+import 'package:inventoryapp/modules/productDetail/widgets/stock_tab_dialog.dart';
+import 'package:inventoryapp/modules/productDetail/widgets/supplier_select_dialog.dart';
 
 class ProductDetailScreen extends StatefulWidget {
   final int productId;
@@ -43,11 +45,16 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           return const Center(child: Text("Product not found"));
         }
 
-        return Column(
-          children: [
-            _buildHeader(product),
-            Expanded(child: _buildContent(theme, context, product)),
-          ],
+        return RefreshIndicator(
+          onRefresh: () async {
+            await controller.loadProductDetail(widget.productId);
+          },
+          child: Column(
+            children: [
+              _buildHeader(product),
+              Expanded(child: _buildContent(theme, context, product)),
+            ],
+          ),
         );
       }),
     );
@@ -97,8 +104,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   /// MAIN CONTENT
-  Widget _buildContent(
-      ThemeData theme, BuildContext context, product) {
+  Widget _buildContent(ThemeData theme, BuildContext context, product) {
     return Container(
       padding: EdgeInsets.all(AppSpacing.paddingSM),
       decoration: BoxDecoration(
@@ -186,45 +192,51 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       icon: Icons.inventory_2_rounded,
       title: "Stock Available",
       subtitle: "${product.stockQuantity} items",
-      onTap: () {
-        showDialog(
-          context: context,
-          builder: (_) => StockUpdateDialog(
-            item: product,
-            onUpdate: (type, qty, date) {
-              // Add your logic here
-            },
-          ),
-        );
-      },
-      showArrow: true,
-      trailing: null,
+      trailing: CircleIconButton(
+        size: AppWidgetSize.iconSM,
+        backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.9),
+        icon: Icons.edit,
+        onTap: () async {
+          Get.dialog(
+            StockTabDialog(
+                productId: widget.productId,
+                currentStock: controller.productDetail.value!.stockQuantity!.toInt()
+            ),
+          );
+        },
+      ),
+      showArrow: false,
     );
   }
 
   /// SUPPLIER CARD
   Widget _buildSupplierCard(product) {
-
     final hasSupplier = product.supplier != null && product.supplier!.isNotEmpty;
     final supplierName = hasSupplier ? (product.supplier!["name"] ?? "No Supplier") : "No Supplier";
-    final supplierContact = hasSupplier ? (product.supplier!["contact"] ?? "No contact") : "No contact";
+    final supplierContact = hasSupplier ? (product.supplier!["contact_info"] ?? "No contact") : "No contact";
 
     return ItemCardWidget(
       icon: Icons.business_center,
       title: supplierName,
       subtitle: supplierContact,
-      onTap: () {
-        showDialog(
-          context: Get.context!,
-          builder: (_) => SupplierDialogWidget(
-            onSubmit: (name, contact, address) {
-              // Your update logic here...
-            },
-          ),
-        );
-      },
       showArrow: true,
-      trailing: null,
+      trailing: CircleIconButton(
+          size: AppWidgetSize.iconSM,
+          backgroundColor: Theme.of(context).colorScheme.primary.withOpacity(0.9),
+          icon: Icons.edit,
+          onTap: (){
+            showDialog(
+              context: Get.context!,
+              builder: (_) => SupplierSelectionDialog(
+                productId: product.id!,
+                onUpdated: () {
+                  final controller = Get.find<ProductController>();
+                  controller.loadProductDetail(product.id!);
+                },
+              ),
+            );
+          }
+      ),
     );
   }
 }

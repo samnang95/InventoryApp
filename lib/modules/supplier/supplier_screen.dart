@@ -43,7 +43,7 @@ class SupplierScreen extends StatelessWidget {
       padding: EdgeInsets.all(AppSpacing.paddingM),
       child: TextFormField(
           decoration: InputDecoration(
-            hintText: 'Search categories...',
+            hintText: 'Search supplier...',
             prefixIcon: const Icon(Icons.search),
           ),
           onChanged: controller.setSearch
@@ -96,12 +96,6 @@ class SupplierScreen extends StatelessWidget {
                     icon: Icons.person,
                     title: s.name,
                     subtitle: s.contactInfo,
-                    // trailing: GestureDetector(
-                    //   onTap: (){
-                    //     controller.deleteSupplier(s.id!.toInt());
-                    //   },
-                    //   child: Icon(Icons.delete, color: Colors.red),
-                    // ),
                     trailing: Row(
                       children: [
                         CircleIconButton(

@@ -1,12 +1,11 @@
-// lib/api/models/product_model.dart
 class ProductModel {
   final int? id;
-  final String name;
-  final String brand;
+  final String? name;
+  final String? brand;
   final String? sku;
-  final String description;
-  final double price;
-  final int stockQuantity;
+  final String? description;
+  final double? price;
+  final int? stockQuantity;
   final List<String>? images;
   final int? supplierId;
   final int? categoryId;
@@ -15,12 +14,12 @@ class ProductModel {
 
   ProductModel({
     this.id,
-    required this.name,
-    required this.brand,
+    this.name,
+    this.brand,
     this.sku,
-    required this.description,
-    required this.price,
-    required this.stockQuantity,
+    this.description,
+    this.price,
+    this.stockQuantity,
     this.images,
     this.supplierId,
     this.categoryId,
@@ -45,15 +44,17 @@ class ProductModel {
     );
   }
 
-  Map<String, dynamic> toJson() => {
-    'name': name,
-    'brand': brand,
-    'sku': sku,
-    'description': description,
-    'price': price,
-    'stock_quantity': stockQuantity,
-    'images': images,
-    'supplier_id': supplierId,
-    'category_id': categoryId,
-  };
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    if (name != null) map['name'] = name;
+    if (brand != null) map['brand'] = brand;
+    if (sku != null) map['sku'] = sku;
+    if (description != null) map['description'] = description;
+    if (price != null) map['price'] = price;
+    if (stockQuantity != null) map['stock_quantity'] = stockQuantity;
+    if (images != null) map['images'] = images;
+    if (supplierId != null) map['supplier_id'] = supplierId;
+    if (categoryId != null) map['category_id'] = categoryId;
+    return map;
+  }
 }

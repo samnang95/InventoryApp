@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:inventoryapp/app/constants/app_widget_size.dart';
 
 class ItemCardWidget extends StatelessWidget {
@@ -60,7 +61,7 @@ class ItemCardWidget extends StatelessWidget {
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: theme.colorScheme.onSurfaceVariant,
                         ),
-                      ),
+                      )
                     ]
                   ],
                 ),
