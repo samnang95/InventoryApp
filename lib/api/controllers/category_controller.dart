@@ -64,11 +64,25 @@ class CategoryController extends GetxController {
       confirmTextColor: Colors.white,
       onConfirm: () async {
         Get.back();
-        await _service.deleteCategory(id);
-        categories.removeWhere((c) => c.id == id);
+        try {
+          await _service.deleteCategory(id);
+          categories.removeWhere((c) => c.id == id);
 
-        Get.snackbar("Success", "Category deleted successfully");
+          Get.defaultDialog(
+            title: "Success",
+            middleText: "Category deleted successfully",
+          );await Future.delayed(const Duration(seconds: 3));
+          Get.back();
+        } catch (e) {
+          Get.defaultDialog(
+            title: "Error",
+            middleText: "Cannot delete category. There are products linked to it.",
+          );
+          await Future.delayed(const Duration(seconds: 3));
+          Get.back();
+        }
       },
     );
   }
+
 }
