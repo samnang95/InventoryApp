@@ -1,9 +1,9 @@
 import 'package:get/get.dart';
-import 'package:inventoryapp/modules/auth/login/login_controller.dart';
+import 'package:inventoryapp/api/controllers/auth_controller.dart';
 
 class LoginBinding extends Bindings {
   @override
   void dependencies() {
-    Get.lazyPut<LoginController>(() => LoginController());
+    Get.lazyPut<AuthController>(() => AuthController());
   }
 }
