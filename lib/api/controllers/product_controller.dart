@@ -97,9 +97,6 @@ class ProductController extends GetxController {
           isLoading.value = false;
         }
       },
-      // onCancel: () {
-      //   Get.back(); // just close dialog
-      // },
     );
   }
 

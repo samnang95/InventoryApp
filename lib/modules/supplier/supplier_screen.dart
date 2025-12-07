@@ -43,7 +43,7 @@ class SupplierScreen extends StatelessWidget {
       padding: EdgeInsets.all(AppSpacing.paddingM),
       child: TextFormField(
           decoration: InputDecoration(
-            hintText: 'Search categories...',
+            hintText: 'Search supplier...',
             prefixIcon: const Icon(Icons.search),
           ),
           onChanged: controller.setSearch

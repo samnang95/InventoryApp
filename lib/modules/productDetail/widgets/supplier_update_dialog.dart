@@ -14,6 +14,7 @@ class SupplierDialogWidget extends StatefulWidget {
 }
 
 class _SupplierDialogWidgetState extends State<SupplierDialogWidget> {
+
   final TextEditingController nameController = TextEditingController();
   final TextEditingController contactController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
