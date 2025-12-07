@@ -19,7 +19,7 @@ class AppPages {
     ...LoginPage.routes,
     ...RegisterPage.routes,
     ...HomePage.routes,
-    ...ProductdetailPage.routes,
+    // ...ProductdetailPage.routes,
     ...SettingsPage.routes,
     ...BottomNavPage.routes,
     ...ProductPage.routes,

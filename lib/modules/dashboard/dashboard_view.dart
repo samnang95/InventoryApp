@@ -99,7 +99,9 @@ class DashboardView extends StatelessWidget {
           icon: Icons.add_shopping_cart,
           title: "New product added",
           subtitle: "Laptop X200 added to Electronics",
-          onTap: () {},
+          onTap: () {
+            Get.toNamed(AppRoutes.product);
+          },
         ),
         ItemCardWidget(
           showArrow: false,

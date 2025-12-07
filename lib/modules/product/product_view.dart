@@ -1,36 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventoryapp/api/controllers/product_controller.dart';
 import 'package:inventoryapp/app/constants/app_spacing.dart';
-import 'package:inventoryapp/app/routes/app_routes.dart';
+import 'package:inventoryapp/app/constants/app_widget_size.dart';
+import 'package:inventoryapp/app/widgets/item_card_widget.dart';
 import 'package:inventoryapp/app/widgets/product_card_widget.dart';
 import 'package:inventoryapp/app/widgets/title_text_widget.dart';
-import 'package:inventoryapp/modules/product/widgets/add_product_widget.dart';
+import 'package:inventoryapp/modules/product/widgets/product_form_bottomsheet.dart';
+import 'package:inventoryapp/modules/productDetail/productDetail_screen.dart';
 import '../../app/constants/app_color.dart';
-import 'product_controller.dart';
 
-class ProductView extends GetView<ProductController> {
-  const ProductView({super.key});
+class ProductView extends StatelessWidget {
+  ProductView({super.key});
+
+  final ProductController controller = Get.put(ProductController());
 
   @override
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Product"),
-        centerTitle: true,
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          showAddProductSheet(context, 1);
+          ProductFormBottomSheet.open(); // Add new product
         },
-        child: const Icon(Icons.add, size: 32),
+        child: const Icon(Icons.add),
+      ),
+      appBar: AppBar(
+        title: Text("Products"),
+        centerTitle: true,
       ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _search(),
-            _productList(),
+            _productList(context),
           ],
         ),
       ),
@@ -45,12 +49,12 @@ class ProductView extends GetView<ProductController> {
           hintText: 'Search products...',
           prefixIcon: const Icon(Icons.search),
         ),
-        // onChanged: controller.onSearchChanged,
+        onChanged: (val) => controller.searchProducts(val),
       ),
     );
   }
 
-  Widget _productList() {
+  Widget _productList(BuildContext context) {
     return Expanded(
       child: Container(
         padding: const EdgeInsets.all(16),
@@ -76,26 +80,112 @@ class ProductView extends GetView<ProductController> {
                 TitleTextWidget(text: "Product Items"),
                 GestureDetector(
                   onTap: () {
-                    // filter action
+                    _showSortDialog(context);
                   },
                   child: const Icon(Icons.filter_alt, color: AppColors.primary),
                 ),
               ],
             ),
             const SizedBox(height: 8),
-            ProductCardWidget(
-              image: "https://images.pexels.com/photos/2533266/pexels-photo-2533266.jpeg",
-              name: "Product Name",
-              category: "Category",
-              stock: 1,
-              id: "1",
-              price: 100,
-              onTap: () {
-                Get.toNamed(AppRoutes.productDetail);
-              },
+            Expanded(
+              child: Obx(() {
+                if (controller.isLoading.value) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (controller.products.isEmpty) {
+                  return Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.inventory_2, size: AppWidgetSize.iconSM,
+                            color: Theme.of(context).colorScheme.primary
+                        ),
+                        Text(
+                          "No product",
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                      ],
+                    ),
+                  );
+                }
+                return ListView.builder(
+                  itemCount: controller.products.length,
+                  itemBuilder: (context, index) {
+                    final product = controller.products[index];
+                    return ProductCardWidget(
+                      images: product.images!,
+                      name: product.name,
+                      category: product.category?['name'] ?? 'N/A',
+                      stock: product.stockQuantity,
+                      price: product.price,
+                      onTapEdit: () {
+                        ProductFormBottomSheet.open(product: product);
+                      },
+                      onTapDelete: () {
+                        controller.deleteProduct(product.id!);
+                      },
+                      onTap: () {
+                        Get.to(() => ProductDetailScreen(productId: product.id!));
+                      },
+                    );
+                  },
+                );
+              }),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  void _showSortDialog(BuildContext context) {
+    Get.defaultDialog(
+      title: "Sort Product",
+      titleStyle: Theme.of(context).textTheme.titleMedium?.copyWith(
+          color: Theme.of(context).colorScheme.primary,
+          fontWeight: FontWeight.w700
+      ),
+      content: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ItemCardWidget(
+            title: "Price: Low to High",
+            icon: Icons.arrow_downward,
+            showArrow: false,
+            onTap: () {
+              controller.sortProducts("price");
+              Get.back();
+            },
+          ),
+          ItemCardWidget(
+            title: "Price: High to Low",
+            icon: Icons.arrow_upward,
+            showArrow: false,
+            onTap: () {
+              controller.sortProducts("-price");
+              Get.back();
+            },
+          ),
+          ItemCardWidget(
+            title: "Name: A-Z",
+            icon: Icons.arrow_downward,
+            showArrow: false,
+            onTap: () {
+              controller.sortProducts("name");
+              Get.back();
+            },
+          ),
+          ItemCardWidget(
+            title: "Name: Z-A",
+            icon: Icons.arrow_upward,
+            showArrow: false,
+            onTap: () {
+              controller.sortProducts("-name");
+              Get.back();
+            },
+          ),
+        ],
       ),
     );
   }

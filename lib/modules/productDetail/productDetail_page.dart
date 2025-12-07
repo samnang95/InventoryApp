@@ -5,10 +5,10 @@ import 'package:inventoryapp/app/routes/app_routes.dart';
 
 class ProductdetailPage {
   static final routes = [
-    GetPage(
-      name: AppRoutes.productDetail,
-      page: () => ProductDetailScreen(),
-      binding: ProductdetailBinding(),
-    ),
+    // GetPage(
+    //   name: AppRoutes.productDetail,
+    //   // page: () => ProductDetailScreen(),
+    //   binding: ProductdetailBinding(),
+    // ),
   ];
 }

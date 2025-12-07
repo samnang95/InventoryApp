@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:inventoryapp/modules/product/product_controller.dart';
+import 'package:inventoryapp/api/controllers/product_controller.dart';
 
 class ProductBinding extends Bindings {
   @override
