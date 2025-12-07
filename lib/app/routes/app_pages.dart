@@ -10,6 +10,7 @@ import 'package:inventoryapp/modules/profile/profile_page.dart';
 import 'package:inventoryapp/modules/search/search_page.dart';
 import 'package:inventoryapp/modules/settings/settings_page.dart';
 import 'package:inventoryapp/modules/splash/splash_page.dart';
+import 'package:inventoryapp/modules/supplier/supplier_page.dart';
 import 'package:inventoryapp/modules/transactions/transactions_page.dart';
 
 class AppPages {
@@ -26,6 +27,7 @@ class AppPages {
     ...ProfilePage.routes,
     ...DashboardPage.routes,
     ...CategoryPage.routes,
-    ...SearchPage.routes
+    ...SearchPage.routes,
+    ...SupplierPage.routes
   ];
 }
