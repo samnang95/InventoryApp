@@ -50,7 +50,9 @@ class ProductController extends GetxController {
     loadProducts();
   }
 
-  void filterProducts({int? categoryId, int? supplierId}) {
+  void filterProductCategory({int? categoryId, int? supplierId}) {
+    searchQuery = null;
+    sortQuery = null;
     filterCategoryId = categoryId;
     filterSupplierId = supplierId;
     loadProducts();
