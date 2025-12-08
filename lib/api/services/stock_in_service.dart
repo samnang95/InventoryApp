@@ -7,7 +7,7 @@ import 'package:inventoryapp/api/models/stock_in_model.dart';
 class StockInService {
   final StorageService _storageService = StorageService();
 
-  // Create Stock In
+  /// Create Stock In
   Future<StockInModel> createStockIn(StockInModel stockIn) async {
     final token = _storageService.token;
     final response = await http.post(
@@ -23,11 +23,17 @@ class StockInService {
     }
   }
 
-  // Get all Stock In
-  Future<List<StockInModel>> getStockIn() async {
+  /// Get all Stock In
+  Future<List<StockInModel>> getStockIn({String? date}) async {
     final token = _storageService.token;
+    String url = "${AppConstants.baseUrl}/api/stock-in";
+
+    if (date != null) {
+      url += "?date=$date";
+    }
+
     final response = await http.get(
-      Uri.parse("${AppConstants.baseUrl}/api/stock-in"),
+      Uri.parse(url),
       headers: AppConstants.headers(token!),
     );
 
@@ -39,7 +45,7 @@ class StockInService {
     }
   }
 
-  // Delete Stock In
+  /// Delete Stock In
   Future<void> deleteStockIn(int id) async {
     final token = _storageService.token;
     final response = await http.delete(

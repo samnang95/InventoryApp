@@ -77,7 +77,6 @@ class ProductCardWidget extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Card(
-        margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         elevation: 2,
         child: Padding(

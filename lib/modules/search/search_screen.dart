@@ -21,7 +21,7 @@ class SearchScreen extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          ProductFormBottomSheet.open(); // Add new product
+          ProductFormBottomSheet.open();
         },
         child: const Icon(Icons.add),
       ),
@@ -57,7 +57,7 @@ class SearchScreen extends StatelessWidget {
   Widget _productList(BuildContext context) {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(AppSpacing.paddingSM),
         decoration: const BoxDecoration(
           color: AppColors.surfaceColor,
           borderRadius: BorderRadius.only(
@@ -108,27 +108,32 @@ class SearchScreen extends StatelessWidget {
                     ),
                   );
                 }
-                return ListView.builder(
-                  itemCount: controller.products.length,
-                  itemBuilder: (context, index) {
-                    final product = controller.products[index];
-                    return ProductCardWidget(
-                      images: product.images!,
-                      name: product.name!,
-                      category: product.category?['name'] ?? 'N/A',
-                      stock: product.stockQuantity!,
-                      price: product.price!,
-                      onTapEdit: () {
-                        ProductFormBottomSheet.open(product: product);
-                      },
-                      onTapDelete: () {
-                        controller.deleteProduct(product.id!);
-                      },
-                      onTap: () {
-                        Get.to(() => ProductDetailScreen(productId: product.id!));
-                      },
-                    );
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    await controller.loadProducts();
                   },
+                  child: ListView.builder(
+                    itemCount: controller.products.length,
+                    itemBuilder: (context, index) {
+                      final product = controller.products[index];
+                      return ProductCardWidget(
+                        images: product.images!,
+                        name: product.name!,
+                        category: product.category?['name'] ?? 'N/A',
+                        stock: product.stockQuantity!,
+                        price: product.price!,
+                        onTapEdit: () {
+                          ProductFormBottomSheet.open(product: product);
+                        },
+                        onTapDelete: () {
+                          controller.deleteProduct(product.id!);
+                        },
+                        onTap: () {
+                          Get.to(() => ProductDetailScreen(productId: product.id!));
+                        },
+                      );
+                    },
+                  ),
                 );
               }),
             ),

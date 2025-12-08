@@ -5,6 +5,7 @@ import 'package:inventoryapp/app/constants/app_spacing.dart';
 import 'package:inventoryapp/app/constants/app_widget_size.dart';
 import 'package:inventoryapp/app/widgets/circle_icon_button.dart';
 import 'package:inventoryapp/app/widgets/item_card_widget.dart';
+import 'package:inventoryapp/modules/product/widgets/product_form_bottomsheet.dart';
 import 'package:inventoryapp/modules/productDetail/widgets/product_chip_widget.dart';
 import 'package:inventoryapp/modules/productDetail/widgets/product_header_widget.dart';
 import 'package:inventoryapp/modules/productDetail/widgets/stock_tab_dialog.dart';
@@ -34,6 +35,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     final theme = Theme.of(context);
 
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          ProductFormBottomSheet.open(product: controller.productDetail.value);
+        },
+        child: const Icon(Icons.edit),
+      ),
       body: Obx(() {
         if (controller.isLoading.value) {
           return const Center(child: CircularProgressIndicator());
@@ -107,10 +114,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   Widget _buildContent(ThemeData theme, BuildContext context, product) {
     return Container(
       padding: EdgeInsets.all(AppSpacing.paddingSM),
-      decoration: BoxDecoration(
-        color: theme.cardColor,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
-      ),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

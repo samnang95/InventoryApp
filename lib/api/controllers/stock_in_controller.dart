@@ -9,21 +9,30 @@ class StockInController extends GetxController {
   var stockInList = <StockInModel>[].obs;
   var isLoading = false.obs;
 
+  // Optional: Keep selected date for filtering
+  var selectedDate = DateTime.now().obs;
+
   @override
   void onInit() {
     super.onInit();
     loadStockIn();
   }
 
-  Future<void> loadStockIn() async {
+  /// Load stock in list
+  Future<void> loadStockIn({DateTime? date}) async {
     try {
       isLoading.value = true;
-      stockInList.value = await _service.getStockIn();
+      String? dateStr;
+      if (date != null) {
+        dateStr = "${date.year.toString().padLeft(4,'0')}-${date.month.toString().padLeft(2,'0')}-${date.day.toString().padLeft(2,'0')}";
+      }
+      stockInList.value = await _service.getStockIn(date: dateStr);
     } finally {
       isLoading.value = false;
     }
   }
 
+  /// Add to stock
   Future<void> addStockIn(StockInModel stockIn) async {
     try {
       isLoading.value = true;
@@ -34,6 +43,7 @@ class StockInController extends GetxController {
     }
   }
 
+  /// Delete Stock
   Future<void> deleteStockIn(int id) async {
     final confirmed = await Get.defaultDialog(
       title: "Confirm Delete",

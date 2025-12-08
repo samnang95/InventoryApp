@@ -120,4 +120,24 @@ class SummaryItem {
     this.icon,
     this.color = Colors.white,
   });
+
+  // Add fromMap constructor
+  factory SummaryItem.fromMap(Map<String, dynamic> map) {
+    return SummaryItem(
+      label: map['label'] ?? '',
+      value: map['value'] ?? '',
+      icon: map['icon'], // you can convert string to IconData if needed
+      color: map['color'] ?? Colors.white,
+    );
+  }
+
+  // Optional: toMap() if needed
+  Map<String, dynamic> toMap() {
+    return {
+      'label': label,
+      'value': value,
+      'icon': icon,
+      'color': color,
+    };
+  }
 }

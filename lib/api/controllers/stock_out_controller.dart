@@ -13,17 +13,25 @@ class StockOutController extends GetxController {
   var quantityError = "".obs;
   var dateError = "".obs;
 
-  // ===== LOAD LIST =====
-  Future<void> loadStockOut() async {
+  @override
+  void onInit() {
+    super.onInit();
+    loadStockOut();
+  }
+
+  /// ===== LOAD LIST =====
+  Future<void> loadStockOut({String? date}) async {
     try {
       isLoading.value = true;
-      stockOutList.value = await _service.getStockOutList();
+
+      // Call service with string date
+      stockOutList.value = await _service.getStockOutList(date: date);
     } finally {
       isLoading.value = false;
     }
   }
 
-  // ===== ADD STOCK OUT =====
+  /// ===== ADD STOCK OUT =====
   Future<void> addStockOut(StockOutModel model) async {
     try {
       isLoading.value = true;
@@ -39,7 +47,7 @@ class StockOutController extends GetxController {
     }
   }
 
-  // ===== DELETE STOCK OUT =====
+  /// ===== DELETE STOCK OUT =====
   Future<bool> deleteStockOut(int id) async {
     try {
       isLoading.value = true;
