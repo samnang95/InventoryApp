@@ -88,40 +88,45 @@ class SupplierScreen extends StatelessWidget {
               if (controller.isLoading.value) {
                 return Center(child: CircularProgressIndicator());
               }
-              return ListView.builder(
-                itemCount: controller.suppliers.length,
-                itemBuilder: (context, index) {
-                  final s = controller.suppliers[index];
-                  return ItemCardWidget(
-                    icon: Icons.person,
-                    title: s.name,
-                    subtitle: s.contactInfo,
-                    trailing: Row(
-                      children: [
-                        CircleIconButton(
-                            backgroundColor: Colors.blue.withOpacity(0.8),
-                            size: AppWidgetSize.iconMedium,
-                            icon: Icons.edit,
-                            onTap: (){
-                              Get.bottomSheet(
-                                SupplierForm(supplier: s),
-                                isScrollControlled: true,
-                              );
-                            }
-                        ),
-                        SizedBox(width: AppSpacing.paddingS),
-                        CircleIconButton(
-                            backgroundColor: Colors.red.withOpacity(0.8),
-                            size: AppWidgetSize.iconMedium,
-                            icon: Icons.delete,
-                            onTap: (){
-                              controller.deleteSupplier(s.id!.toInt());
-                            }
-                        ),
-                      ],
-                    ),
-                  );
+              return RefreshIndicator(
+                onRefresh: () async {
+                  await controller.loadSuppliers();
                 },
+                child: ListView.builder(
+                  itemCount: controller.suppliers.length,
+                  itemBuilder: (context, index) {
+                    final s = controller.suppliers[index];
+                    return ItemCardWidget(
+                      icon: Icons.person,
+                      title: s.name,
+                      subtitle: s.contactInfo,
+                      trailing: Row(
+                        children: [
+                          CircleIconButton(
+                              backgroundColor: Colors.blue.withOpacity(0.8),
+                              size: AppWidgetSize.iconMedium,
+                              icon: Icons.edit,
+                              onTap: (){
+                                Get.bottomSheet(
+                                  SupplierForm(supplier: s),
+                                  isScrollControlled: true,
+                                );
+                              }
+                          ),
+                          SizedBox(width: AppSpacing.paddingS),
+                          CircleIconButton(
+                              backgroundColor: Colors.red.withOpacity(0.8),
+                              size: AppWidgetSize.iconMedium,
+                              icon: Icons.delete,
+                              onTap: (){
+                                controller.deleteSupplier(s.id!.toInt());
+                              }
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               );
             }),
           ),

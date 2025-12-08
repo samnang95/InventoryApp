@@ -21,7 +21,7 @@ class ProductView extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          ProductFormBottomSheet.open(); // Add new product
+          ProductFormBottomSheet.open();
         },
         child: const Icon(Icons.add),
       ),
@@ -57,7 +57,7 @@ class ProductView extends StatelessWidget {
   Widget _productList(BuildContext context) {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(AppSpacing.paddingSM),
         decoration: const BoxDecoration(
           color: AppColors.surfaceColor,
           borderRadius: BorderRadius.only(
@@ -97,9 +97,9 @@ class ProductView extends StatelessWidget {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(Icons.inventory_2, size: AppWidgetSize.iconSM,
-                            color: Theme.of(context).colorScheme.primary
-                        ),
+                        Icon(Icons.inventory_2,
+                            size: AppWidgetSize.iconSM,
+                            color: Theme.of(context).colorScheme.primary),
                         Text(
                           "No product",
                           style: Theme.of(context).textTheme.titleSmall,
@@ -108,27 +108,34 @@ class ProductView extends StatelessWidget {
                     ),
                   );
                 }
-                return ListView.builder(
-                  itemCount: controller.products.length,
-                  itemBuilder: (context, index) {
-                    final product = controller.products[index];
-                    return ProductCardWidget(
-                      images: product.images!,
-                      name: product.name!,
-                      category: product.category?['name'] ?? 'N/A',
-                      stock: product.stockQuantity!,
-                      price: product.price!,
-                      onTapEdit: () {
-                        ProductFormBottomSheet.open(product: product);
-                      },
-                      onTapDelete: () {
-                        controller.deleteProduct(product.id!);
-                      },
-                      onTap: () {
-                        Get.to(() => ProductDetailScreen(productId: product.id!));
-                      },
-                    );
+
+                // Wrap ListView with RefreshIndicator
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    await controller.loadProducts(); // <-- Reload products
                   },
+                  child: ListView.builder(
+                    itemCount: controller.products.length,
+                    itemBuilder: (context, index) {
+                      final product = controller.products[index];
+                      return ProductCardWidget(
+                        images: product.images!,
+                        name: product.name!,
+                        category: product.category?['name'] ?? 'N/A',
+                        stock: product.stockQuantity!,
+                        price: product.price!,
+                        onTapEdit: () {
+                          ProductFormBottomSheet.open(product: product);
+                        },
+                        onTapDelete: () {
+                          controller.deleteProduct(product.id!);
+                        },
+                        onTap: () {
+                          Get.to(() => ProductDetailScreen(productId: product.id!));
+                        },
+                      );
+                    },
+                  ),
                 );
               }),
             ),

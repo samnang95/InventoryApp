@@ -97,7 +97,7 @@ class DashboardView extends StatelessWidget {
         ItemCardWidget(
           showArrow: false,
           icon: Icons.add_shopping_cart,
-          title: "New product added",
+          title: "Product",
           subtitle: "Laptop X200 added to Electronics",
           onTap: () {
             Get.toNamed(AppRoutes.product);
@@ -106,30 +106,16 @@ class DashboardView extends StatelessWidget {
         ItemCardWidget(
           showArrow: false,
           icon: Icons.download,
-          title: "Stock updated",
+          title: "Stock",
           subtitle: "12 pcs of Laptop X200 added",
           onTap: () {},
         ),
         ItemCardWidget(
           showArrow: false,
-          icon: Icons.payment,
-          title: "Order completed",
-          subtitle: "Order #1023 has been completed",
-          onTap: () {},
-        ),
-        ItemCardWidget(
-          showArrow: false,
           icon: Icons.people,
-          title: "New supplier added",
+          title: "Supplier",
           subtitle: "Supplier ABC added to your list",
           onTap: () {Get.toNamed(AppRoutes.supplier);},
-        ),
-        ItemCardWidget(
-          showArrow: false,
-          icon: Icons.remove_shopping_cart,
-          title: "Product removed",
-          subtitle: "Old Mouse Model removed from inventory",
-          onTap: () {},
         ),
       ],
     );

@@ -1,74 +1,78 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:inventoryapp/app/widgets/summary_card_widget.dart';
+import 'package:intl/intl.dart';
+import 'package:inventoryapp/api/services/stock_in_service.dart';
+import 'package:inventoryapp/api/services/stock_out_service.dart';
+import '../../api/models/stock_in_model.dart';
+import '../../api/models/stock_out_model.dart';
+import '../../app/widgets/summary_card_widget.dart';
 
 class TransactionsController extends GetxController {
+  final StockInService _stockInService = StockInService();
+  final StockOutService _stockOutService = StockOutService();
 
-  // Transactions list
-  final transactions = <Map<String, dynamic>>[].obs;
+  RxBool isLoading = false.obs;
 
-  // Summary items list
-  final summaryItems = <SummaryItem>[].obs;
+  RxList<StockInModel> stockInList = <StockInModel>[].obs;
+  RxList<StockOutModel> stockOutList = <StockOutModel>[].obs;
+
+  Rx<DateTime> selectedDate = DateTime.now().obs;
+
+  // Summary items (already SummaryItem model)
+  RxList<SummaryItem> summaryItems = <SummaryItem>[].obs;
 
   @override
   void onInit() {
     super.onInit();
-
-    // Initialize transactions
-    transactions.addAll([
-      {
-        "icon": Icons.south,
-        "title": "Stock In",
-        "desc": "Add items to inventory by choosing a location and quantity.",
-      },
-      {
-        "icon": Icons.north,
-        "title": "Stock Out",
-        "desc": "Remove item from inventory by choosing a location and quantity.",
-      },
-    ]);
-
-    // Initialize summary items
-    summaryItems.addAll([
-      SummaryItem(
-        label: "Total",
-        value: "100",
-        icon: Icons.inventory,
-        color: Colors.yellow,
-      ),
-      SummaryItem(
-        label: "Stock In",
-        value: "50",
-        icon: Icons.arrow_downward,
-        color: Colors.green,
-      ),
-      SummaryItem(
-        label: "Stock Out",
-        value: "50",
-        icon: Icons.arrow_upward,
-        color: Colors.red,
-      ),
-    ]);
+    loadData(date: selectedDate.value);
   }
 
-  /// Navigate to corresponding transaction screen
-  void navigateTo(String title) {
-    switch (title) {
-      case "Stock In":
-        // Get.toNamed(AppRoutes.stockIn);
-        break;
-      case "Stock Out":
-        // Get.toNamed(AppRoutes.stockOut);
-        break;
-      case "Move Stock":
-        // Get.to(() => const MoveStockScreen());
-        break;
-      case "Adjust Stock":
-        // Get.to(() => const AdjustStockScreen());
-        break;
-      default:
-        Get.snackbar("Unknown", "No screen available for $title");
+  Future<void> loadData({required DateTime date}) async {
+    selectedDate.value = date;
+
+    final formatted = DateFormat('yyyy-MM-dd').format(date);
+
+    await loadStockIn(date: formatted);
+    await loadStockOut(date: formatted);
+
+    buildSummary();
+  }
+
+  Future<void> loadStockIn({String? date}) async {
+    try {
+      isLoading.value = true;
+      stockInList.value = await _stockInService.getStockIn(date: date);
+    } finally {
+      isLoading.value = false;
     }
   }
 
+  Future<void> loadStockOut({String? date}) async {
+    try {
+      isLoading.value = true;
+      stockOutList.value = await _stockOutService.getStockOutList(date: date);
+    } finally {
+      isLoading.value = false;
+    }
+  }
+
+  void buildSummary() {
+    final totalIn = stockInList.fold<int>(0, (sum, e) => sum + (e.quantity ?? 0));
+    final totalOut = stockOutList.fold<int>(0, (sum, e) => sum + (e.quantity ?? 0));
+
+    summaryItems.value = [
+      SummaryItem(
+        label: "Stock In",
+        value: "$totalIn",
+        color: const Color(0xFF4CAF50),
+        icon: Icons.arrow_downward,
+      ),
+      SummaryItem(
+        label: "Stock Out",
+        value: "$totalOut",
+        color: const Color(0xFFF44336),
+        icon: Icons.arrow_upward,
+      ),
+    ];
+  }
 }

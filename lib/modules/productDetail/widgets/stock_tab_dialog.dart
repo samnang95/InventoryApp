@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:inventoryapp/api/controllers/product_controller.dart';
 import 'package:inventoryapp/api/controllers/stock_in_controller.dart';
 import 'package:inventoryapp/api/controllers/stock_out_controller.dart';
 import 'package:inventoryapp/api/models/stock_in_model.dart';
@@ -26,6 +27,7 @@ class _StockTabDialogState extends State<StockTabDialog> with SingleTickerProvid
   
   final StockInController stockInController = Get.put(StockInController());
   final StockOutController stockOutController = Get.put(StockOutController());
+  final ProductController productController = Get.put(ProductController());
   
   late TabController _tabController;
 
@@ -95,9 +97,7 @@ class _StockTabDialogState extends State<StockTabDialog> with SingleTickerProvid
     );
   }
 
-  /// ==============================
-  ///   STOCK IN TAB
-  /// ==============================
+  /// STOCK IN TAB
   Widget _buildStockInTab() {
     return SingleChildScrollView(
       child: Column(
@@ -126,14 +126,35 @@ class _StockTabDialogState extends State<StockTabDialog> with SingleTickerProvid
           /// Date Picker
           Obx(() => InkWell(
             onTap: () async {
-              final picked = await showDatePicker(
+              // Pick Date
+              final pickedDate = await showDatePicker(
                 context: context,
                 initialDate: DateTime.now(),
                 firstDate: DateTime(2000),
                 lastDate: DateTime(2100),
               );
-              _inDate.value = picked;
-              _inDateError.value = "";
+
+              if (pickedDate != null) {
+                // Pick Time
+                final pickedTime = await showTimePicker(
+                  context: context,
+                  initialTime: TimeOfDay.now(),
+                );
+
+                if (pickedTime != null) {
+                  // Combine Date + Time
+                  final combinedDateTime = DateTime(
+                    pickedDate.year,
+                    pickedDate.month,
+                    pickedDate.day,
+                    pickedTime.hour,
+                    pickedTime.minute,
+                  );
+
+                  _inDate.value = combinedDateTime;
+                  _inDateError.value = "";
+                }
+              }
             },
             child: _buildDateBox(_inDate.value),
           )),
@@ -153,9 +174,7 @@ class _StockTabDialogState extends State<StockTabDialog> with SingleTickerProvid
     );
   }
 
-  /// ==============================
-  ///   STOCK OUT TAB
-  /// ==============================
+  /// STOCK OUT TAB
   Widget _buildStockOutTab() {
     return SingleChildScrollView(
       child: Column(
@@ -184,14 +203,35 @@ class _StockTabDialogState extends State<StockTabDialog> with SingleTickerProvid
           /// Date Picker
           Obx(() => InkWell(
             onTap: () async {
-              final picked = await showDatePicker(
+              // Pick Date
+              final pickedDate = await showDatePicker(
                 context: context,
                 initialDate: DateTime.now(),
                 firstDate: DateTime(2000),
                 lastDate: DateTime(2100),
               );
-              _outDate.value = picked;
-              _outDateError.value = "";
+
+              if (pickedDate != null) {
+                // Pick Time
+                final pickedTime = await showTimePicker(
+                  context: context,
+                  initialTime: TimeOfDay.now(),
+                );
+
+                if (pickedTime != null) {
+                  // Combine Date + Time
+                  final combinedDateTime = DateTime(
+                    pickedDate.year,
+                    pickedDate.month,
+                    pickedDate.day,
+                    pickedTime.hour,
+                    pickedTime.minute,
+                  );
+
+                  _outDate.value = combinedDateTime;
+                  _outDateError.value = "";
+                }
+              }
             },
             child: _buildDateBox(_outDate.value),
           )),
@@ -211,10 +251,7 @@ class _StockTabDialogState extends State<StockTabDialog> with SingleTickerProvid
     );
   }
 
-  /// ==============================
-  ///   VALIDATION FUNCTIONS
-  /// ==============================
-
+  /// VALIDATION FUNCTIONS
   Future<void> _validateStockIn() async {
     int? qty = int.tryParse(_inQtyController.text);
 
@@ -227,14 +264,6 @@ class _StockTabDialogState extends State<StockTabDialog> with SingleTickerProvid
       return;
     }
 
-    // SUCCESS → return result to caller
-    Get.back(result: {
-      "type": "in",
-      "productId": widget.productId,
-      "quantity": qty,
-      "date": _inDate.value,
-    });
-
     StockInModel data = StockInModel(
       productId: widget.productId,
       quantity: qty,
@@ -242,6 +271,12 @@ class _StockTabDialogState extends State<StockTabDialog> with SingleTickerProvid
     );
 
     await stockInController.addStockIn(data);
+    await productController.loadProductDetail(widget.productId);
+
+    _inQtyController.clear();
+    _inQtyError.value = "";
+    _inDate.value = null;
+    _inDateError.value = "";
 
     Get.back();
   }
@@ -249,28 +284,23 @@ class _StockTabDialogState extends State<StockTabDialog> with SingleTickerProvid
   Future<void> _validateStockOut() async {
     int? qty = int.tryParse(_outQtyController.text);
 
+    // Validate quantity
     if (qty == null || qty <= 0) {
       _outQtyError.value = "Quantity must be greater than 0";
       return;
     }
 
+    // Validate current stock
     if (qty > widget.currentStock) {
       _outQtyError.value = "Cannot stock out more than current stock.";
       return;
     }
 
+    // Validate date
     if (_outDate.value == null) {
       _outDateError.value = "Please select a date";
       return;
     }
-
-    // SUCCESS → return result to caller
-    Get.back(result: {
-      "type": "out",
-      "productId": widget.productId,
-      "quantity": qty,
-      "date": _outDate.value,
-    });
 
     final model = StockOutModel(
       productId: widget.productId,
@@ -278,7 +308,20 @@ class _StockTabDialogState extends State<StockTabDialog> with SingleTickerProvid
       date: _outDate.value.toString(),
     );
 
+    // Call API
     await stockOutController.addStockOut(model);
+
+    // Reload product
+    await productController.loadProductDetail(widget.productId);
+
+    // Reset fields after successful update
+    _outQtyController.clear();
+    _outQtyError.value = "";
+    _outDate.value = null;
+    _outDateError.value = "";
+
+    // Close dialog or bottom sheet
+    Get.back();
   }
 
   /// ==============================
@@ -319,8 +362,8 @@ class _StockTabDialogState extends State<StockTabDialog> with SingleTickerProvid
         children: [
           Text(
             date != null
-                ? DateFormat.yMMMMd().format(date)
-                : "Select Date",
+                ? DateFormat('yyyy-MM-dd HH:mm').format(date)
+                : "Select Date & Time",
           ),
           const Icon(Icons.calendar_today),
         ],
