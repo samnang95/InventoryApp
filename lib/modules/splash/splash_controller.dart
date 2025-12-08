@@ -19,7 +19,9 @@ class SplashController extends GetxController {
 
     if (token != null && role == 'admin') {
       Get.offNamed(AppRoutes.navigationbotton);
-    } else {
+    }else if(token != null && role == 'staff') {
+      Get.offNamed(AppRoutes.navigationbotton);
+    }else {
       Get.offNamed(AppRoutes.login);
     }
   }

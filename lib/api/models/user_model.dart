@@ -4,8 +4,6 @@ class User {
   final String email;
   final String avatar;
   final String role;
-  final String createdAt;
-  final String updatedAt;
 
   User({
     required this.id,
@@ -13,8 +11,6 @@ class User {
     required this.email,
     required this.avatar,
     required this.role,
-    required this.createdAt,
-    required this.updatedAt,
   });
 
   factory User.fromJson(Map<String, dynamic> json) {
@@ -24,9 +20,17 @@ class User {
       email: json['email'],
       avatar: json['avatar'],
       role: json['role'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'name': name,
+      'email': email,
+      'avatar': avatar,
+      'role': role,
+    };
   }
 }
 
@@ -41,5 +45,12 @@ class AuthResponse {
       user: User.fromJson(json['user']),
       token: json['token'],
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'user': user.toJson(),
+      'token': token,
+    };
   }
 }

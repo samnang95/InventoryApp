@@ -26,6 +26,8 @@ class ProductService {
     final uri = Uri.parse("${AppConstants.baseUrl}/api/products").replace(queryParameters: queryParams);
     final res = await http.get(uri, headers: AppConstants.headers(token));
 
+    print(res.body);
+
     if (res.statusCode == 200) {
       final data = jsonDecode(res.body)['data'] as List;
       return data.map((e) => ProductModel.fromJson(e)).toList();

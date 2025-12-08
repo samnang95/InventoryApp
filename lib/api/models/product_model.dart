@@ -1,3 +1,5 @@
+import 'package:inventoryapp/api/models/user_model.dart';
+
 class ProductModel {
   final int? id;
   final String? name;
@@ -11,50 +13,59 @@ class ProductModel {
   final int? categoryId;
   final Map<String, dynamic>? supplier;
   final Map<String, dynamic>? category;
+  final User? creator;
 
   ProductModel({
     this.id,
     this.name,
-    this.brand,
-    this.sku,
-    this.description,
-    this.price,
-    this.stockQuantity,
-    this.images,
+    this.brand = '',
+    this.sku = '',
+    this.description = '',
+    this.price = 0.0,
+    this.stockQuantity = 0,
+    List<String>? images,
     this.supplierId,
-    this.categoryId,
-    this.supplier,
-    this.category,
-  });
+    this.categoryId = 0,
+    Map<String, dynamic>? supplier,
+    Map<String, dynamic>? category,
+    this.creator,
+  })  : images = images ?? [],
+        supplier = supplier ?? {},
+        category = category ?? {};
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
-      id: json['id'],
-      name: json['name'],
+      id: json['id'] ?? 0,
+      name: json['name'] ?? '',
       brand: json['brand'] ?? '',
       sku: json['sku'] ?? '',
       description: json['description'] ?? '',
-      price: double.tryParse(json['price'].toString()) ?? 0,
+      price: double.tryParse(json['price']?.toString() ?? '') ?? 0.0,
       stockQuantity: json['stock_quantity'] ?? 0,
-      images: (json['images'] as List?)?.cast<String>() ?? [],
-      supplierId: json['supplier_id'],
-      categoryId: json['category_id'],
+      images: (json['images'] as List?)?.map((e) => e.toString()).toList() ?? [],
+      supplierId: json['supplier_id'] ?? 0,
+      categoryId: json['category_id'] ?? 0,
       supplier: json['supplier'] ?? {},
       category: json['category'] ?? {},
+      creator: json['creator'] != null ? User.fromJson(json['creator']) : null,
     );
   }
 
   Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    if (name != null) map['name'] = name;
-    if (brand != null) map['brand'] = brand;
-    if (sku != null) map['sku'] = sku;
-    if (description != null) map['description'] = description;
-    if (price != null) map['price'] = price;
-    if (stockQuantity != null) map['stock_quantity'] = stockQuantity;
-    if (images != null) map['images'] = images;
-    if (supplierId != null) map['supplier_id'] = supplierId;
-    if (categoryId != null) map['category_id'] = categoryId;
-    return map;
+    return {
+      'id': id,
+      'name': name,
+      'brand': brand,
+      'sku': sku,
+      'description': description,
+      'price': price,
+      'stock_quantity': stockQuantity,
+      'images': images,
+      'supplier_id': supplierId,
+      'category_id': categoryId,
+      'supplier': supplier,
+      'category': category,
+      'creator': creator?.toJson(),
+    };
   }
 }
