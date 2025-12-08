@@ -68,4 +68,19 @@ class ProductModel {
       'creator': creator?.toJson(),
     };
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'brand': brand,
+      'sku': sku,
+      'description': description,
+      'price': price,
+      'stock_quantity': stockQuantity,
+      'images': images?.join(',') ?? '',
+      'supplier_id': supplierId,
+      'category_id': categoryId,
+    };
+  }
 }
