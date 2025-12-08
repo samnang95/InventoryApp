@@ -7,6 +7,7 @@ import 'package:inventoryapp/modules/dashboard/dashboard_view.dart';
 import 'package:inventoryapp/modules/product/product_view.dart';
 import 'package:inventoryapp/modules/settings/settings_screen.dart';
 import 'package:inventoryapp/modules/transactions/transactions_screen.dart';
+import 'package:inventoryapp/modules/user/user_view.dart';
 
 class BottomNavScreen extends GetView<BottomNavController> {
   BottomNavScreen({super.key});
@@ -17,6 +18,7 @@ class BottomNavScreen extends GetView<BottomNavController> {
     DashboardView(),
     CategoryView(),
     TransactionsScreen(),
+    UserView(),
     SettingsScreen(),
   ];
 
@@ -60,6 +62,10 @@ class BottomNavScreen extends GetView<BottomNavController> {
         BottomNavigationBarItem(
           icon: Icon(Icons.swap_horiz),
           label: 'Transactions',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.supervised_user_circle),
+          label: 'User',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.settings_outlined),
