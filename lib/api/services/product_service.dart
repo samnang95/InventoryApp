@@ -11,26 +11,25 @@ class ProductService {
   String get token => _storage.token ?? '';
 
   /// Get all products with optional search, sort, filter
-  Future<List<ProductModel>> getProducts({
-    String? search,
-    String? sort,
-    int? categoryId,
-    int? supplierId,
-  }) async {
-    var queryParams = <String, String>{};
-    if (search != null && search.isNotEmpty) queryParams['q'] = search;
-    if (sort != null && sort.isNotEmpty) queryParams['sort'] = sort;
-    if (categoryId != null) queryParams['category'] = categoryId.toString();
-    if (supplierId != null) queryParams['supplier'] = supplierId.toString();
+  Future<List<ProductModel>> getProducts({String? search, String? sort, int? categoryId, int? supplierId,}) async {
+    final queryParameters = <String, String>{};
 
-    final uri = Uri.parse("${AppConstants.baseUrl}/api/products").replace(queryParameters: queryParams);
+    if (search != null && search.isNotEmpty) queryParameters['q'] = search;
+    if (sort != null && sort.isNotEmpty) queryParameters['sort'] = sort;
+    if (categoryId != null) queryParameters['category'] = categoryId.toString();
+    if (supplierId != null) queryParameters['supplier'] = supplierId.toString();
+
+    final uri = Uri.parse("${AppConstants.baseUrl}/api/products").replace(
+      queryParameters: queryParameters,
+    );
+
     final res = await http.get(uri, headers: AppConstants.headers(token));
 
-    print(res.body);
-
     if (res.statusCode == 200) {
-      final data = jsonDecode(res.body)['data'] as List;
-      return data.map((e) => ProductModel.fromJson(e)).toList();
+      final data = jsonDecode(res.body);
+      return (data['data'] as List)
+          .map((e) => ProductModel.fromJson(e))
+          .toList();
     } else {
       throw Exception("Failed to load products");
     }
@@ -78,4 +77,5 @@ class ProductService {
       throw Exception("Failed to load product detail");
     }
   }
+
 }

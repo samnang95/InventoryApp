@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:inventoryapp/api/controllers/product_controller.dart';
 import 'package:inventoryapp/app/constants/app_color.dart';
 import 'package:inventoryapp/app/constants/app_spacing.dart';
 import 'package:inventoryapp/app/constants/app_widget_size.dart';
@@ -13,6 +14,7 @@ class CategoryView extends StatelessWidget {
   CategoryView({super.key});
 
   final CategoryController controller = Get.put(CategoryController());
+  final ProductController productController = Get.put(ProductController());
 
   @override
   Widget build(BuildContext context) {
@@ -101,45 +103,47 @@ class CategoryView extends StatelessWidget {
                 return const Center(child: Text("No categories found"));
               }
 
-              return ListView.builder(
-                itemCount: controller.categories.length,
-                itemBuilder: (context, index) {
-                  final category = controller.categories[index];
-                  return ItemCardWidget(
-                    title: category.name,
-                    trailing: Row(
-                      children: [
-                        CircleIconButton(
-                            backgroundColor: Colors.blue.withOpacity(0.8),
-                            size: AppWidgetSize.iconMedium,
-                            icon: Icons.edit,
-                            onTap: (){
-                              Get.bottomSheet(
-                                CategoryBottomSheet(category: category),
-                                isScrollControlled: true,
-                              );
-                            }
-                        ),
-                        SizedBox(width: AppSpacing.paddingS),
-                        CircleIconButton(
-                            backgroundColor: Colors.red.withOpacity(0.8),
-                            size: AppWidgetSize.iconMedium,
-                            icon: Icons.delete,
-                            onTap: (){
-                              controller.deleteCategory(category.id!);
-                            }
-                        ),
-                      ],
-                    ),
-                    subtitle: category.description,
-                    onTap: () {
-                      // Get.bottomSheet(
-                      //   CategoryBottomSheet(category: category),
-                      //   isScrollControlled: true,
-                      // );
-                    },
-                  );
+              return RefreshIndicator(
+                onRefresh: () async {
+                  await controller.fetchCategories();
                 },
+                child: ListView.builder(
+                  itemCount: controller.categories.length,
+                  itemBuilder: (context, index) {
+                    final category = controller.categories[index];
+                    return ItemCardWidget(
+                      title: category.name,
+                      trailing: Row(
+                        children: [
+                          CircleIconButton(
+                              backgroundColor: Colors.blue.withOpacity(0.8),
+                              size: AppWidgetSize.iconMedium,
+                              icon: Icons.edit,
+                              onTap: (){
+                                Get.bottomSheet(
+                                  CategoryBottomSheet(category: category),
+                                  isScrollControlled: true,
+                                );
+                              }
+                          ),
+                          SizedBox(width: AppSpacing.paddingS),
+                          CircleIconButton(
+                              backgroundColor: Colors.red.withOpacity(0.8),
+                              size: AppWidgetSize.iconMedium,
+                              icon: Icons.delete,
+                              onTap: (){
+                                controller.deleteCategory(category.id!);
+                              }
+                          ),
+                        ],
+                      ),
+                      subtitle: category.description,
+                      onTap: () {
+
+                      },
+                    );
+                  },
+                ),
               );
             }),
           ),

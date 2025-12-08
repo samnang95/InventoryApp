@@ -11,6 +11,7 @@ import 'package:inventoryapp/app/constants/app_spacing.dart';
 
 class ProductFormBottomSheet {
   static void open({ProductModel? product}) {
+
     final CategoryController categoryController = Get.put(CategoryController());
     final ProductController controller = Get.put(ProductController());
     final SupplierController supplierController = Get.put(SupplierController());
@@ -136,19 +137,29 @@ class ProductFormBottomSheet {
               // Category Dropdown
               Obx(() {
                 final categories = categoryController.categories;
+
+                // Ensure selectedCategory exists in items, otherwise null
+                final currentValue = categories.any((c) => c.id == selectedCategory)
+                    ? selectedCategory
+                    : null;
+
+                print("-"*100);
+                print(currentValue);
+                print("-"*100);
+
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     DropdownButtonFormField<int>(
-                      value: selectedCategory,
+                      value: currentValue,
                       decoration: const InputDecoration(labelText: "Category"),
-                      items: categories
-                          .map((c) => DropdownMenuItem(
+                      items: categories.map((c) => DropdownMenuItem(
                         value: c.id,
                         child: Text(c.name),
-                      ))
-                          .toList(),
-                      onChanged: (v) => selectedCategory = v,
+                      )).toList(),
+                      onChanged: (v) {
+                        selectedCategory = v;
+                      },
                     ),
                     if (categoryError.value)
                       const Padding(
@@ -252,7 +263,7 @@ class ProductFormBottomSheet {
                     price: double.tryParse(priceCtrl.text) ?? 0.0,
                     stockQuantity: int.tryParse(stockCtrl.text) ?? 0,
                     categoryId: categoryId,
-                    supplierId: selectedSupplier,
+                    // supplierId: selectedSupplier,
                     images: base64Images,
                   );
 
