@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:intl/intl.dart';
 import 'package:inventoryapp/api/models/stock_out_model.dart';
 import 'package:inventoryapp/app/constants/app_constant.dart';
 import 'package:inventoryapp/app/services/storage_service.dart';
@@ -40,9 +39,6 @@ class StockOutService {
     final body = jsonEncode(model.toJson());
 
     final response = await http.post(url, headers: header, body: body);
-
-    print(response.body);
-
     if (response.statusCode == 201 || response.statusCode == 200) {
       final data = jsonDecode(response.body);
       return StockOutModel.fromJson(data);
@@ -54,9 +50,7 @@ class StockOutService {
   /// ===== DELETE STOCK OUT =====
   Future<bool> deleteStockOut(int id) async {
     final url = Uri.parse("${AppConstants.baseUrl}/api/stock-out/$id");
-
     final response = await http.delete(url, headers: header);
-
     return response.statusCode == 200;
   }
 }

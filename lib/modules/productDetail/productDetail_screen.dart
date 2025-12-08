@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventoryapp/api/controllers/product_controller.dart';
+import 'package:inventoryapp/api/models/product_model.dart';
 import 'package:inventoryapp/app/constants/app_spacing.dart';
 import 'package:inventoryapp/app/constants/app_widget_size.dart';
 import 'package:inventoryapp/app/widgets/circle_icon_button.dart';
 import 'package:inventoryapp/app/widgets/item_card_widget.dart';
+import 'package:inventoryapp/app/widgets/title_text_widget.dart';
 import 'package:inventoryapp/modules/product/widgets/product_form_bottomsheet.dart';
 import 'package:inventoryapp/modules/productDetail/widgets/product_chip_widget.dart';
 import 'package:inventoryapp/modules/productDetail/widgets/product_header_widget.dart';
@@ -12,8 +14,8 @@ import 'package:inventoryapp/modules/productDetail/widgets/stock_tab_dialog.dart
 import 'package:inventoryapp/modules/productDetail/widgets/supplier_select_dialog.dart';
 
 class ProductDetailScreen extends StatefulWidget {
-  final int productId;
 
+  final int productId;
   const ProductDetailScreen({super.key, required this.productId});
 
   @override
@@ -111,7 +113,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   /// MAIN CONTENT
-  Widget _buildContent(ThemeData theme, BuildContext context, product) {
+  Widget _buildContent(ThemeData theme, BuildContext context, ProductModel product) {
     return Container(
       padding: EdgeInsets.all(AppSpacing.paddingSM),
       child: SingleChildScrollView(
@@ -165,21 +167,18 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
             SizedBox(height: AppSpacing.paddingL),
 
             // Description
-            Text(
-              "Description",
-              style: theme.textTheme.titleMedium!.copyWith(
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
-              ),
-            ),
-            const SizedBox(height: 8),
-
+            TitleTextWidget(text: "Product Description"),
             Text(
               product.description ?? "No description",
-              style: theme.textTheme.bodyMedium!.copyWith(
-                height: 1.5,
-                color: theme.colorScheme.onSurface.withOpacity(.7),
-              ),
+              style: theme.textTheme.bodyMedium,
+            ),
+            SizedBox(height: AppSpacing.paddingL),
+
+            // Create By
+            TitleTextWidget(text: "Create By"),
+            Text(
+              product.creator!.name.toString() ?? "No description",
+              style: theme.textTheme.bodyMedium,
             ),
 
             const SizedBox(height: 40),

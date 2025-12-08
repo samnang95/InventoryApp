@@ -41,4 +41,7 @@ class AppRoutes {
 
   /// Supplier
   static const supplier = '/supplier';
+
+  /// User
+  static const user = '/user';
 }

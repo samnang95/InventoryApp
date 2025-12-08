@@ -11,6 +11,7 @@ import 'package:inventoryapp/modules/settings/settings_page.dart';
 import 'package:inventoryapp/modules/splash/splash_page.dart';
 import 'package:inventoryapp/modules/supplier/supplier_page.dart';
 import 'package:inventoryapp/modules/transactions/transactions_page.dart';
+import 'package:inventoryapp/modules/user/user_page.dart';
 
 class AppPages {
   static final pages = [
@@ -26,6 +27,7 @@ class AppPages {
     ...DashboardPage.routes,
     ...CategoryPage.routes,
     ...SearchPage.routes,
-    ...SupplierPage.routes
+    ...SupplierPage.routes,
+    ...UserPage.routes
   ];
 }

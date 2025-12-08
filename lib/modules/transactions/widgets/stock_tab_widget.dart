@@ -79,17 +79,30 @@ class StockTabsWidget extends StatelessWidget {
           return ItemCardWidget(
             title: item.product!.name.toString(),
             icon: Icons.arrow_upward,
-            subtitleWidget: Row(
+            subtitleWidget: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(Icons.date_range, size: AppWidgetSize.iconXS, color: Theme.of(context).colorScheme.primary),
-                SizedBox(width: 2),
-                Text(result['date'].toString()),
+                Row(
+                  children: [
+                    Icon(Icons.date_range, size: AppWidgetSize.iconXS, color: Theme.of(context).colorScheme.primary),
+                    SizedBox(width: 2),
+                    Text(result['date'].toString()),
 
-                SizedBox(width: AppSpacing.paddingS),
+                    SizedBox(width: AppSpacing.paddingS),
 
-                Icon(Icons.access_time_rounded, size: AppWidgetSize.iconXS, color: Theme.of(context).colorScheme.primary),
-                SizedBox(width: 2),
-                Text(result['time'].toString()),
+                    Icon(Icons.access_time_rounded, size: AppWidgetSize.iconXS, color: Theme.of(context).colorScheme.primary),
+                    SizedBox(width: 2),
+                    Text(result['time'].toString()),
+                  ],
+                ),
+                SizedBox(height: 4),
+                Row(
+                  children: [
+                    Icon(Icons.person_outline, size: AppWidgetSize.iconXS, color: Theme.of(context).colorScheme.primary),
+                    SizedBox(width: 2),
+                    Text(item.creator!.name.toString()),
+                  ],
+                ),
               ],
             ),
             trailing: TextBackground(
@@ -128,17 +141,30 @@ class StockTabsWidget extends StatelessWidget {
               icon: Icons.arrow_downward,
               iconColor: Theme.of(context).colorScheme.error,
               iconBackgroundColor: Theme.of(context).colorScheme.error.withOpacity(0.15),
-              subtitleWidget: Row(
+              subtitleWidget: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Icon(Icons.date_range, size: AppWidgetSize.iconXS, color: Theme.of(context).colorScheme.primary),
-                  SizedBox(width: 2),
-                  Text(result['date'].toString()),
+                  Row(
+                    children: [
+                      Icon(Icons.date_range, size: AppWidgetSize.iconXS, color: Theme.of(context).colorScheme.primary),
+                      SizedBox(width: 2),
+                      Text(result['date'].toString()),
 
-                  SizedBox(width: AppSpacing.paddingS),
+                      SizedBox(width: AppSpacing.paddingS),
 
-                  Icon(Icons.access_time_rounded, size: AppWidgetSize.iconXS, color: Theme.of(context).colorScheme.primary),
-                  SizedBox(width: 2),
-                  Text(result['time'].toString()),
+                      Icon(Icons.access_time_rounded, size: AppWidgetSize.iconXS, color: Theme.of(context).colorScheme.primary),
+                      SizedBox(width: 2),
+                      Text(result['time'].toString()),
+                    ],
+                  ),
+                  SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Icon(Icons.person_outline, size: AppWidgetSize.iconXS, color: Theme.of(context).colorScheme.primary),
+                      SizedBox(width: 2),
+                      Text(item.creator!.name.toString()),
+                    ],
+                  ),
                 ],
               ),
               trailing: TextBackground(
