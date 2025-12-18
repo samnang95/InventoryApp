@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:inventoryapp/api/models/user_model.dart';
@@ -36,15 +38,17 @@ class UserController extends GetxController {
     required String email,
     required String password,
     required String role,
-    String? avatarBase64,
+    File? avatarFile, // changed from avatarBase64
   }) async {
     final newUser = await _service.createUser(
       name: name,
       email: email,
       password: password,
       role: role,
-      avatarBase64: avatarBase64,
+      avatarFile: avatarFile, // pass file to service
     );
+
+    // Insert new user at the top of the list
     users.insert(0, newUser);
   }
 
@@ -54,19 +58,23 @@ class UserController extends GetxController {
     String? email,
     String? passwordHash,
     String? role,
-    String? avatar,
+    File? avatar,
   }) async {
+    // Call updateUser service with file
     final updatedUser = await _service.updateUser(
       id: id,
       name: name,
       email: email,
       passwordHash: passwordHash,
       role: role,
-      avatar: avatar,
+      avatar: avatar, // pass File
     );
 
+    // Update the local users list
     int index = users.indexWhere((u) => u.id == id);
-    if (index != -1) users[index] = updatedUser;
+    if (index != -1) {
+      users[index] = updatedUser;
+    }
   }
 
   Future<void> removeUser(int id, {String? userName}) async {
