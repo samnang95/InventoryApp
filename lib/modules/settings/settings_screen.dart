@@ -39,20 +39,6 @@ class SettingsScreen extends GetView<SettingsController> {
                 ),
                 SizedBox(height: AppSpacing.paddingL),
 
-                // ----------------- TEAM MEMBERS -----------------
-                TitleTextWidget(text: "Team Member"),
-                ItemCardWidget(
-                  icon: Icons.group_outlined,
-                  title: "Staff",
-                  onTap: () => controller.navigate("Members"),
-                ),
-                ItemCardWidget(
-                  icon: Icons.handshake_outlined,
-                  title: "Suppliers",
-                  onTap: () => controller.navigate("Partners"),
-                ),
-                SizedBox(height: AppSpacing.paddingM),
-
                 // ----------------- APPEARANCE -----------------
                 TitleTextWidget(text: "Appearance"),
                 Obx(() => ItemCardWidget(

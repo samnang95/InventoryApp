@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import '../../api/controllers/dashboard_controller.dart';
 import 'dashboard_controller.dart';
 
 class DashboardBinding extends Bindings {
