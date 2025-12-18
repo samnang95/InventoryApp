@@ -16,6 +16,15 @@ class TransactionsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Transactions"),
+        // actions: [
+        //   GestureDetector(
+        //     onTap: (){
+        //       controller.loadStockIn();
+        //       controller.loadStockOut();
+        //     },
+        //     child: Icon(Icons.refresh),
+        //   )
+        // ],
         centerTitle: true,
       ),
 
