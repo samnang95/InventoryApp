@@ -70,8 +70,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   /// HEADER WITH IMAGE
-  Widget _buildHeader(product) {
-    final imgs = product.images;
+  Widget _buildHeader(ProductModel product) {
+    final imgs = product.image;
 
     // If no images, show placeholder with back button
     if (imgs == null || imgs.isEmpty) {
@@ -108,7 +108,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     // If images exist, use ProductHeaderWidget
     return ProductHeaderWidget(
       productId: product.id!,
-      images: imgs,
+      imageUrl: imgs,
     );
   }
 
@@ -147,8 +147,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 productChipWidget(
                   theme,
                   Icons.category,
-                  (product.category != null && product.category!.isNotEmpty)
-                      ? (product.category!["name"] ?? "N/A")
+                  (product.category != null)
+                      ? (product.category!.name.toString() ?? "N/A")
                       : "N/A",
                 ),
                 productChipWidget(

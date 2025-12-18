@@ -119,9 +119,9 @@ class ProductView extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final product = controller.products[index];
                       return ProductCardWidget(
-                        images: product.images!,
+                        image: product.image.toString(),
                         name: product.name!,
-                        category: product.category?['name'] ?? 'N/A',
+                        category: product.category?.name ?? 'N/A',
                         stock: product.stockQuantity!,
                         price: product.price!,
                         onTapEdit: () {

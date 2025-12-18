@@ -6,7 +6,7 @@ import 'package:inventoryapp/app/helper/base64_helper.dart';
 import 'package:inventoryapp/app/widgets/circle_icon_button.dart';
 
 class ProductCardWidget extends StatelessWidget {
-  final List<String> images;
+  final String image;
   final String name;
   final String category;
   final int stock;
@@ -17,7 +17,7 @@ class ProductCardWidget extends StatelessWidget {
 
   const ProductCardWidget({
     super.key,
-    required this.images,
+    required this.image,
     required this.name,
     required this.category,
     required this.stock,
@@ -32,7 +32,8 @@ class ProductCardWidget extends StatelessWidget {
     final theme = Theme.of(context);
 
     Widget _buildImage() {
-      if (images.isEmpty) {
+      if (image .isEmpty) {
+        // Placeholder when no image
         return Container(
           height: 70,
           width: 70,
@@ -42,34 +43,36 @@ class ProductCardWidget extends StatelessWidget {
           ),
           child: Icon(
             Icons.image,
-            size: AppWidgetSize.iconMedium,
+            size: 36, // or use AppWidgetSize.iconMedium if defined
             color: theme.colorScheme.primary,
           ),
         );
       }
 
-      final firstImage = images.first;
-
-      if (firstImage.startsWith('data:image')) {
-        final bytes = base64Decode(Base64Helper.extractBase64(firstImage));
-        return ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Image.memory(
-            bytes,
-            height: 70,
-            width: 70,
-            fit: BoxFit.cover,
-          ),
-        );
-      }
-
+      // Show network image
       return ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: Image.network(
-          firstImage,
+          image,
           height: 70,
           width: 70,
           fit: BoxFit.cover,
+          errorBuilder: (context, error, stackTrace) {
+            // Fallback if the image URL fails
+            return Container(
+              height: 70,
+              width: 70,
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primary.withOpacity(0.12),
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(
+                Icons.broken_image,
+                size: 36,
+                color: theme.colorScheme.primary,
+              ),
+            );
+          },
         ),
       );
     }

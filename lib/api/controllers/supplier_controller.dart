@@ -13,6 +13,12 @@ class SupplierController extends GetxController {
   var searchQuery = ''.obs;
   var sortOption = ''.obs;
 
+  @override
+  void onInit() {
+    loadSuppliers();
+    super.onInit();
+  }
+
   /// Load suppliers with optional search & sort
   Future<void> loadSuppliers() async {
     try {

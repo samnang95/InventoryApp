@@ -74,7 +74,7 @@ class SupplierSelectionDialog extends StatelessWidget {
                       onTap: () async {
                         print(supplier.id);
                         final updatedProduct = ProductModel(supplierId: supplier.id);
-                        await productController.updateProduct(productId, updatedProduct);
+                        await productController.updateProduct(productId);
 
                         if (onUpdated != null) onUpdated!();
 
