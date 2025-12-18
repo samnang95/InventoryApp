@@ -34,7 +34,9 @@ class SettingsScreen extends GetView<SettingsController> {
 
                 /// PROFILE
                 GestureDetector(
-                  onTap: () => Get.toNamed(AppRoutes.profile),
+                  onTap: () {
+
+                  },
                   child: ProfileWidget(),
                 ),
                 SizedBox(height: AppSpacing.paddingL),

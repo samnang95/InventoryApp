@@ -170,13 +170,13 @@ class DashboardView extends StatelessWidget {
             Get.toNamed(AppRoutes.user);
           },
         ),
-        ItemCardWidget(
-          showArrow: false,
-          icon: Icons.download,
-          title: "Stock",
-          subtitle: "Manage all stocks",
-          onTap: () {},
-        ),
+        // ItemCardWidget(
+        //   showArrow: false,
+        //   icon: Icons.download,
+        //   title: "Stock",
+        //   subtitle: "Manage all stocks",
+        //   onTap: () {},
+        // ),
         ItemCardWidget(
           showArrow: false,
           icon: Icons.people,
