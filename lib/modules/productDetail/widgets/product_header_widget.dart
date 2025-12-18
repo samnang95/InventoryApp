@@ -1,45 +1,23 @@
-import 'dart:convert';
-import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ProductHeaderWidget extends StatefulWidget {
+class ProductHeaderWidget extends StatelessWidget {
   final int productId;
-  final List<String> images;
+  final String? imageUrl;
 
   const ProductHeaderWidget({
     super.key,
     required this.productId,
-    required this.images,
+    this.imageUrl,
   });
 
   @override
-  State<ProductHeaderWidget> createState() => _ProductHeaderWidgetState();
-}
-
-class _ProductHeaderWidgetState extends State<ProductHeaderWidget> {
-  int _currentIndex = 0;
-
-  @override
   Widget build(BuildContext context) {
-    // SAFETY CHECK
-    if (widget.images.isEmpty) {
-      return const SizedBox(
-        height: 240,
-        child: Center(child: Text("No Image Available")),
-      );
-    }
-
-    // Decode safely
-    Uint8List decodeImage(String data) {
-      final base64Data = data.contains(',') ? data.split(',').last : data;
-      return base64Decode(base64Data);
-    }
-
     return Column(
       children: [
         Stack(
           children: [
+            // Background gradient
             Container(
               height: 260,
               decoration: const BoxDecoration(
@@ -50,20 +28,46 @@ class _ProductHeaderWidgetState extends State<ProductHeaderWidget> {
                 ),
               ),
             ),
+
+            // Product Image
             Positioned(
               bottom: 0,
               left: 0,
               right: 0,
               child: Hero(
-                tag: widget.productId.toString(),
-                child: Image.memory(
-                  decodeImage(widget.images[_currentIndex]),
-                  height: 220,
-                  fit: BoxFit.fill,
+                tag: productId.toString(),
+                child: Container(
+                  height: 200,
+                  alignment: Alignment.center,
+                  child: imageUrl != null && imageUrl!.isNotEmpty ? Image.network(
+                    imageUrl!,
+                    width: MediaQuery.of(context).size.width,
+                    fit: BoxFit.cover,
+                    height: 200,
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Icon(
+                        Icons.broken_image,
+                        size: 80,
+                        color: Colors.white70,
+                      );
+                    },
+                    loadingBuilder: (context, child, progress) {
+                      if (progress == null) return child;
+                      return const CircularProgressIndicator(
+                        color: Colors.white,
+                      );
+                    },
+                  ) : const Center(
+                    child: Text(
+                      "No Image Available",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
                 ),
               ),
             ),
 
+            // Back Button
             Positioned(
               top: 40,
               left: 16,
@@ -77,48 +81,6 @@ class _ProductHeaderWidgetState extends State<ProductHeaderWidget> {
             ),
           ],
         ),
-
-        if (widget.images.length > 1)
-          SizedBox(
-            height: 80,
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.all(12),
-              itemCount: widget.images.length,
-              itemBuilder: (context, index) {
-                final img = widget.images[index];
-
-                return GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _currentIndex = index;
-                    });
-                  },
-                  child: Container(
-                    margin: const EdgeInsets.only(right: 10),
-                    padding: _currentIndex == index
-                        ? const EdgeInsets.all(3)
-                        : EdgeInsets.zero,
-                    decoration: BoxDecoration(
-                      border: _currentIndex == index
-                          ? Border.all(color: Colors.blue, width: 2)
-                          : null,
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(8),
-                      child: Image.memory(
-                        decodeImage(img),
-                        width: 60,
-                        height: 60,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
       ],
     );
   }

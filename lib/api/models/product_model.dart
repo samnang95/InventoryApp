@@ -1,4 +1,6 @@
 import 'package:inventoryapp/api/models/user_model.dart';
+import 'package:inventoryapp/api/models/supplier_model.dart';
+import 'package:inventoryapp/api/models/category_model.dart';
 
 class ProductModel {
   final int? id;
@@ -8,11 +10,11 @@ class ProductModel {
   final String? description;
   final double? price;
   final int? stockQuantity;
-  final List<String>? images;
+  final String? image;
   final int? supplierId;
   final int? categoryId;
-  final Map<String, dynamic>? supplier;
-  final Map<String, dynamic>? category;
+  final SupplierModel? supplier; // Use Supplier model
+  final CategoryModel? category; // Use Category model
   final User? creator;
 
   ProductModel({
@@ -23,15 +25,13 @@ class ProductModel {
     this.description = '',
     this.price = 0.0,
     this.stockQuantity = 0,
-    List<String>? images,
+    this.image = '',
     this.supplierId,
     this.categoryId = 0,
-    Map<String, dynamic>? supplier,
-    Map<String, dynamic>? category,
+    this.supplier,
+    this.category,
     this.creator,
-  })  : images = images ?? [],
-        supplier = supplier ?? {},
-        category = category ?? {};
+  });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
     return ProductModel(
@@ -41,13 +41,24 @@ class ProductModel {
       sku: json['sku'] ?? '',
       description: json['description'] ?? '',
       price: double.tryParse(json['price']?.toString() ?? '') ?? 0.0,
-      stockQuantity: json['stock_quantity'] ?? 0,
-      images: (json['images'] as List?)?.map((e) => e.toString()).toList() ?? [],
-      supplierId: json['supplier_id'] ?? 0,
-      categoryId: json['category_id'] ?? 0,
-      supplier: json['supplier'] ?? {},
-      category: json['category'] ?? {},
-      creator: json['creator'] != null ? User.fromJson(json['creator']) : null,
+      stockQuantity: json['stock_quantity'] is int
+          ? json['stock_quantity']
+          : int.tryParse(json['stock_quantity']?.toString() ?? '0') ?? 0,
+      image: json['image'] ?? '',
+      supplierId: json['supplier_id'] is int
+          ? json['supplier_id']
+          : int.tryParse(json['supplier_id']?.toString() ?? ''),
+      categoryId: json['category_id'] is int
+          ? json['category_id']
+          : int.tryParse(json['category_id']?.toString() ?? '0') ?? 0,
+      supplier: json['supplier'] != null
+          ? SupplierModel.fromJson(json['supplier'])
+          : null,
+      category: json['category'] != null
+          ? CategoryModel.fromJson(json['category'])
+          : null,
+      creator:
+      json['creator'] != null ? User.fromJson(json['creator']) : null,
     );
   }
 
@@ -60,11 +71,11 @@ class ProductModel {
       'description': description,
       'price': price,
       'stock_quantity': stockQuantity,
-      'images': images,
+      'image': image,
       'supplier_id': supplierId,
       'category_id': categoryId,
-      'supplier': supplier,
-      'category': category,
+      'supplier': supplier?.toJson(),
+      'category': category?.toJson(),
       'creator': creator?.toJson(),
     };
   }
@@ -78,7 +89,7 @@ class ProductModel {
       'description': description,
       'price': price,
       'stock_quantity': stockQuantity,
-      'images': images?.join(',') ?? '',
+      'image': image,
       'supplier_id': supplierId,
       'category_id': categoryId,
     };
