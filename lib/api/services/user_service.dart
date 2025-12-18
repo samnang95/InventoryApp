@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:inventoryapp/app/constants/app_constant.dart';
 import 'package:inventoryapp/api/models/user_model.dart';
@@ -29,20 +30,30 @@ class UserService {
     required String email,
     required String password,
     required String role,
-    String? avatarBase64,
+    File? avatarFile, // Use File instead of base64
   }) async {
     final url = Uri.parse("${AppConstants.baseUrl}/api/users");
 
-    final body = jsonEncode({
-      "name": name,
-      "email": email,
-      "password": password,
-      "password_hash": password,
-      "role": role,
-      if (avatarBase64 != null) "avatar_base64": avatarBase64,
-    });
+    // Multipart request
+    final request = http.MultipartRequest('POST', url)
+      ..headers.addAll(AppConstants.headers(_storage.token!))
+      ..fields['name'] = name
+      ..fields['email'] = email
+      ..fields['password'] = password
+      ..fields['password_hash'] = password
+      ..fields['role'] = role;
 
-    final response = await http.post(url, headers: AppConstants.headers(_storage.token!), body: body);
+    // Attach avatar if exists
+    if (avatarFile != null) {
+      final avatarMultipart = await http.MultipartFile.fromPath(
+        'avatar', // field name expected by API
+        avatarFile.path,
+      );
+      request.files.add(avatarMultipart);
+    }
+
+    final streamedResponse = await request.send();
+    final response = await http.Response.fromStream(streamedResponse);
 
     print(response.body);
 
@@ -60,26 +71,40 @@ class UserService {
     String? email,
     String? passwordHash,
     String? role,
-    String? avatar,
+    File? avatar, // <-- file upload
   }) async {
-    final url = Uri.parse("${AppConstants.baseUrl}/api/users/$id");
+    final uri = Uri.parse("${AppConstants.baseUrl}/api/users/$id");
 
-    final body = jsonEncode({
-      if (name != null) "name": name,
-      if (email != null) "email": email,
-      if (passwordHash != null) "password_hash": passwordHash,
-      if (role != null) "role": role,
-      if (avatar != null) "avatar": avatar,
-    });
+    // Create multipart request
+    var request = http.MultipartRequest('POST', uri); // Use POST with _method=PUT if backend supports
+    request.headers.addAll(AppConstants.headers(_storage.token!));
 
-    final response = await http.put(url, headers: AppConstants.headers(_storage.token!), body: body);
+    // Add method override if backend expects PUT
+    request.fields['_method'] = 'PUT';
+
+    // Add fields if provided
+    if (name != null) request.fields['name'] = name;
+    if (email != null) request.fields['email'] = email;
+    if (passwordHash != null) request.fields['password_hash'] = passwordHash;
+    if (role != null) request.fields['role'] = role;
+
+    // Add avatar file if provided
+    if (avatar != null) {
+      request.files.add(
+        await http.MultipartFile.fromPath('avatar', avatar.path),
+      );
+    }
+
+    // Send request
+    var streamedResponse = await request.send();
+    var response = await http.Response.fromStream(streamedResponse);
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       return User.fromJson(data);
     }
 
-    throw Exception("Failed to update user");
+    throw Exception("Failed to update user: ${response.body}");
   }
 
   Future<void> deleteUser(int id) async {
