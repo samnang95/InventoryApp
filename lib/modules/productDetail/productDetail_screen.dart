@@ -212,15 +212,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   }
 
   /// SUPPLIER CARD
-  Widget _buildSupplierCard(product) {
-    final hasSupplier = product.supplier != null && product.supplier!.isNotEmpty;
-    final supplierName = hasSupplier ? (product.supplier!["name"] ?? "No Supplier") : "No Supplier";
-    final supplierContact = hasSupplier ? (product.supplier!["contact_info"] ?? "No contact") : "No contact";
-
+  Widget _buildSupplierCard(ProductModel product) {
     return ItemCardWidget(
       icon: Icons.business_center,
-      title: supplierName,
-      subtitle: supplierContact,
+      title: product.supplier!.name.toString(),
+      subtitle: product.supplier!.contactInfo.toString(),
       showArrow: true,
       trailing: CircleIconButton(
           size: AppWidgetSize.iconSM,
